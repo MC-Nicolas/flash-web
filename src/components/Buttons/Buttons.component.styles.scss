@@ -1,0 +1,90 @@
+.neumorphic-1 {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: double 2px transparent;
+  border-radius: 50%;
+  background-image: linear-gradient(#1d2a3a00, #1d2a3a02),
+    linear-gradient(140deg, rgba(0, 0, 0, 0.45) 45%, rgb(199, 199, 199) 155%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  cursor: pointer;
+}
+.neumorphic-2 {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(
+    45% 45% at 45% 26%,
+    rgba(84, 86, 89, 0.5) 0%,
+    rgba(35, 38, 41, 0.5) 100%
+  );
+  box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s;
+  &:active {
+    transform: scale(0.98);
+    box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.564);
+  }
+}
+.neumorphic-3 {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    69.35% 69.35% at 28.23% 11.29%,
+    #5d6167 0%,
+    #13151a 100%
+  );
+  border: 1px solid #000000;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
+  filter: blur(20px);
+}
+.neumorphic-content {
+  position: relative;
+  top: 3%;
+  left: -26%;
+  color: rgb(166, 166, 166);
+}
+.neumorphic-active {
+  background-image: linear-gradient(#1d2a3a00, #1d2a3a02),
+    linear-gradient(
+      140deg,
+      rgba(0, 7, 140, 0.336) 45%,
+      rgba(0, 113, 206, 0.683) 155%
+    );
+}
+.neumorphic-icon-active {
+  color: rgba(0, 113, 206, 0.683);
+}
+
+.newElementButton-container {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  font-size: 52px;
+  color: rgb(41, 190, 253);
+  background-blend-mode: overlay;
+  backdrop-filter: blur(20px);
+  border: double 2px transparent;
+  border-radius: 50%;
+  background-image: linear-gradient(#1d2a3a00, #1d2a3a02),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.45) 45%, rgb(199, 199, 199) 155%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+.newElementButton-inner {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(20, 22, 25, 0.44);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.25);
+}

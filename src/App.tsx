@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
 
-function App() {
+import store from './redux/store';
+
+import FlexContainer from './components/FlexContainer/FlexContainer.component';
+import Dashboard from './pages/Dashboard/Dashboard.page';
+import Login from './pages/Login/Login.page';
+import { Provider } from 'react-redux';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <FlexContainer height='100vh'>
+        <Routes>
+          <Route path='/' element={<Dashboard />} />
+          <Route path='/login' element={<Login />} />
+        </Routes>
+      </FlexContainer>
+    </Provider>
   );
-}
+};
 
 export default App;
