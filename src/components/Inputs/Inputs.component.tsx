@@ -6,9 +6,10 @@ import './Inputs.component.style.scss';
 
 type NeumorphicInputProps = {
   label: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
+  onChange: any;
+  placeholder?: string;
   value: string;
+  style?: {};
 };
 
 export const NeumorphicInput = ({
@@ -41,6 +42,44 @@ export const NeumorphicInput = ({
         placeholder={placeholder}
         value={value}
       />
+    </FlexContainer>
+  );
+};
+
+export const NeumorphicSelect = ({
+  label,
+  onChange,
+  placeholder,
+  value,
+  style,
+}: NeumorphicInputProps) => {
+  return (
+    <FlexContainer
+      style={style}
+      height='100px'
+      width='200px'
+      flexDirection='column'
+      alignItems='flex-start'
+    >
+      <p
+        style={{
+          fontSize: '18px',
+          color: 'white',
+          letterSpacing: '2px',
+          paddingBottom: '10px',
+        }}
+      >
+        {label}
+      </p>
+      <select
+        className='neumorphic-select'
+        onChange={onChange}
+        placeholder={placeholder}
+        value={value}
+      >
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+      </select>
     </FlexContainer>
   );
 };

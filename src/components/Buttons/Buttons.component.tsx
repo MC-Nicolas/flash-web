@@ -20,7 +20,7 @@ export const DarkPlainButton = ({ title, theme }: DarkPlainButtonProps) => {
   );
 };
 
-export const NeumorphicButton = ({ icon }: { icon: JSX.Element }) => {
+export const NeumorphicButton = ({ icon }: { icon: JSX.Element | any }) => {
   return (
     <div className='neumorphic-container'>
       <div className='neumorphic-1'>

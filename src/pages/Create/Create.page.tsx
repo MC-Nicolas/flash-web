@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
 import NewDeck from '../../components/NewDeck/NewDeck.component';
+import NewFlashcard from '../../components/NewFlashcard/NewFlashcard.component';
 import NewFolder from '../../components/NewFolder/NewFolder.component';
 import Sidebar from '../../components/Sidebar/Sidebar.component';
 import { capitalizeFirstLetter } from '../../utils/functions';
@@ -22,7 +23,7 @@ const Create = () => {
         </h1>
         {params.type === 'folder' ? <NewFolder /> : <></>}
         {params.type === 'deck' ? <NewDeck /> : <></>}
-        {params.type === 'flaschard' ? <NewFolder /> : <></>}
+        {params.type === 'flashcard' ? <NewFlashcard /> : <></>}
       </FlexContainer>
     </FlexContainer>
   );
