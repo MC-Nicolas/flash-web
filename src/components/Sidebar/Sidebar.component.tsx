@@ -1,14 +1,20 @@
 import React from 'react';
+
 import styled from 'styled-components';
+
 import { NeumorphicButton } from '../Buttons/Buttons.component';
+
+import SettingsIcon from '@mui/icons-material/Settings';
+import AddIcon from '@mui/icons-material/Add';
+import NewMenu from '../NewMenu/NewMenu.component';
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
   return (
     <StyledSidebar>
-      <NeumorphicButton />
-      <NeumorphicButton />
+      <NewMenu icon={<NeumorphicButton icon={<AddIcon />} />} />
+      <NeumorphicButton icon={<SettingsIcon />} />
     </StyledSidebar>
   );
 };

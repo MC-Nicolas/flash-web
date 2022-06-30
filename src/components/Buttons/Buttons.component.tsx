@@ -2,8 +2,6 @@ import React from 'react';
 
 import { StyledDarkPlainButton } from './Buttons.component.styles';
 
-import SettingsIcon from '@mui/icons-material/Settings';
-
 import './Buttons.component.styles.scss';
 
 type DarkPlainButtonProps = {
@@ -22,15 +20,13 @@ export const DarkPlainButton = ({ title, theme }: DarkPlainButtonProps) => {
   );
 };
 
-export const NeumorphicButton = () => {
+export const NeumorphicButton = ({ icon }: { icon: JSX.Element }) => {
   return (
     <div className='neumorphic-container'>
       <div className='neumorphic-1'>
         <div className='neumorphic-2'>
           <div className='neumorphic-3' />
-          <p className='neumorphic-content'>
-            <SettingsIcon />
-          </p>
+          <p className='neumorphic-content'>{icon}</p>
         </div>{' '}
       </div>
     </div>

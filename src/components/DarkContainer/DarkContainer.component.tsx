@@ -5,12 +5,14 @@ import styled from 'styled-components';
 const DarkContainer = ({
   children,
   height,
+  minHeight,
 }: {
   children: JSX.Element | JSX.Element[];
   height: string;
+  minHeight?: string;
 }) => {
   return (
-    <StyledDarkContainer style={{ height }}>
+    <StyledDarkContainer style={{ height, minHeight }}>
       <StyledDarkContent>{children}</StyledDarkContent>
     </StyledDarkContainer>
   );
