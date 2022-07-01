@@ -3,8 +3,9 @@ import * as React from 'react';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FolderIcon from '@mui/icons-material/Folder';
-import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import { NeumorphicButton } from '../Buttons/Buttons.component';
@@ -12,8 +13,8 @@ import { useNavigate } from 'react-router-dom';
 
 const actions = [
   { icon: <NeumorphicButton icon={<FolderIcon />} />, name: 'Folder' },
-  { icon: <NeumorphicButton icon={<LocalLibraryIcon />} />, name: 'Deck' },
-  { icon: <NeumorphicButton icon={<ViewCarouselIcon />} />, name: 'Flashcard' },
+  { icon: <NeumorphicButton icon={<LibraryBooksIcon />} />, name: 'Deck' },
+  { icon: <NeumorphicButton icon={<LocalLibraryIcon />} />, name: 'Flashcard' },
 ];
 
 const NewMenu = ({ icon }: { icon: JSX.Element }) => {

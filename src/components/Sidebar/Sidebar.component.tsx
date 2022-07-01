@@ -3,18 +3,43 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { NeumorphicButton } from '../Buttons/Buttons.component';
+import NewMenu from '../NewMenu/NewMenu.component';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
-import NewMenu from '../NewMenu/NewMenu.component';
+
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+import HomeIcon from '@mui/icons-material/Home';
+import FlexContainer from '../FlexContainer/FlexContainer.component';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
+  const navigate = useNavigate();
   return (
     <StyledSidebar>
       <NewMenu icon={<NeumorphicButton icon={<AddIcon />} />} />
-      <NeumorphicButton icon={<SettingsIcon />} />
+      <FlexContainer
+        style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+        flexDirection='column'
+        justifyContent='space-evenly'
+      >
+        <NeumorphicButton icon={<HomeIcon />} onClick={() => navigate('/')} />
+        <NeumorphicButton
+          icon={<ViewCarouselIcon />}
+          onClick={() => navigate('/my-cards')}
+        />
+        <NeumorphicButton
+          icon={<EqualizerIcon />}
+          onClick={() => navigate('/performances')}
+        />
+      </FlexContainer>
+      <NeumorphicButton
+        icon={<SettingsIcon />}
+        onClick={() => navigate('/settings')}
+      />
     </StyledSidebar>
   );
 };

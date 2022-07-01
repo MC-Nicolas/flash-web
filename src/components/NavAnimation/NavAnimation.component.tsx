@@ -43,7 +43,7 @@ const NavAnimation = ({
             activeSection === 'how' ? 'active' : ''
           }`}
         >
-          <p>How</p>
+          <p>Type</p>
         </div>
       </button>
       <button
@@ -57,7 +57,7 @@ const NavAnimation = ({
             activeSection === 'what' ? 'active' : ''
           }`}
         >
-          <p>What</p>
+          <p>Flash</p>
         </div>
       </button>
     </FlexContainer>

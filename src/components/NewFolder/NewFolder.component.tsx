@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useAppSelector } from '../../redux/redux.hooks';
 import { theme } from '../../theme/theme';
 
 import { DarkPlainButton } from '../Buttons/Buttons.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import { NeumorphicInput } from '../Inputs/Inputs.component';
 
+import { createNewFolderToDatabase } from '../../database/foldersData';
+
 const NewFolder = () => {
-  const [folderName, setFolderName] = React.useState('');
+  const { email } = useAppSelector((state) => state.user);
+  const [folderName, setFolderName] = useState('');
+
+  const handleCreateFolder = () => {
+    createNewFolderToDatabase(email, folderName);
+  };
+
   return (
     <FlexContainer>
       <FlexContainer
@@ -22,7 +31,11 @@ const NewFolder = () => {
             setFolderName(e.target.value)
           }
         />
-        <DarkPlainButton theme={theme} title='Create' />
+        <DarkPlainButton
+          theme={theme}
+          title='Create'
+          onClick={handleCreateFolder}
+        />
       </FlexContainer>
     </FlexContainer>
   );

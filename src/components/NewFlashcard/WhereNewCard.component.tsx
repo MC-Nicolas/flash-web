@@ -2,8 +2,8 @@ import React from 'react';
 
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 
-import { NeumorphicButton } from '../Buttons/Buttons.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
+import { NeumorphicButton } from '../Buttons/Buttons.component';
 import { NeumorphicSelect } from '../Inputs/Inputs.component';
 
 type WhereProps = {
@@ -11,6 +11,9 @@ type WhereProps = {
   setFolderToAddTo: any;
   deck: string;
   setDeckToAddTo: any;
+  foldersOptions: string[];
+  decksOptions: string[];
+  handleNavigationSection: () => void;
 };
 
 const WhereNewCard = ({
@@ -18,6 +21,9 @@ const WhereNewCard = ({
   setFolderToAddTo,
   deck,
   setDeckToAddTo,
+  foldersOptions,
+  decksOptions,
+  handleNavigationSection,
 }: WhereProps) => {
   return (
     <FlexContainer
@@ -33,6 +39,7 @@ const WhereNewCard = ({
           style={{ backgroundColor: 'rgba(0,0,0,0)' }}
           value={folderToAddTo}
           label='Folder'
+          options={foldersOptions}
           onChange={(e: { target: { value: string } }) =>
             setFolderToAddTo(e.target.value)
           }
@@ -42,12 +49,16 @@ const WhereNewCard = ({
           style={{ backgroundColor: 'rgba(0,0,0,0)', minHeight: '400px' }}
           value={deck}
           label='Deck'
+          options={decksOptions}
           onChange={(e: { target: { value: string } }) =>
             setDeckToAddTo(e.target.value)
           }
         />
       </FlexContainer>
-      <NeumorphicButton icon={<DoubleArrowIcon />} />
+      <NeumorphicButton
+        icon={<DoubleArrowIcon />}
+        onClick={handleNavigationSection}
+      />
     </FlexContainer>
   );
 };

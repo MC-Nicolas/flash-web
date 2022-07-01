@@ -10,6 +10,7 @@ type NeumorphicInputProps = {
   placeholder?: string;
   value: string;
   style?: {};
+  options?: string[];
 };
 
 export const NeumorphicInput = ({
@@ -52,6 +53,7 @@ export const NeumorphicSelect = ({
   placeholder,
   value,
   style,
+  options,
 }: NeumorphicInputProps) => {
   return (
     <FlexContainer
@@ -77,8 +79,11 @@ export const NeumorphicSelect = ({
         placeholder={placeholder}
         value={value}
       >
-        <option value='1'>1</option>
-        <option value='2'>2</option>
+        {options?.map((option: string) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
       </select>
     </FlexContainer>
   );
