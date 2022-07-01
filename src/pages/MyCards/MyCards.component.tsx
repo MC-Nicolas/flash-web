@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import DarkContainer from '../../../components/DarkContainer/DarkContainer.component';
-import FlexContainer from '../../../components/FlexContainer/FlexContainer.component';
-import { NeumorphicSelect } from '../../../components/Inputs/Inputs.component';
-import PreviewCard from '../../../components/PreviewCard/PreviewCard.component';
-import Sidebar from '../../../components/Sidebar/Sidebar.component';
+
+import DarkContainer from '../../components/DarkContainer/DarkContainer.component';
+import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
+import { NeumorphicSelect } from '../../components/Inputs/Inputs.component';
+import PreviewCard from '../../components/PreviewCard/PreviewCard.component';
+import Sidebar from '../../components/Sidebar/Sidebar.component';
+
 import {
   extractFlashcards,
   extractFolders,
   extractSubFolders,
-} from '../../../database/foldersData';
-import { useAppSelector } from '../../../redux/redux.hooks';
+} from '../../database/foldersData';
+import { useAppSelector } from '../../redux/redux.hooks';
 
 type Props = {};
 
@@ -44,7 +46,14 @@ const MyCards = (props: Props) => {
         <FlexContainer height='100px' width='100%' justifyContent='center'>
           <h1 style={{ color: 'white', letterSpacing: '2px' }}>My cards</h1>
         </FlexContainer>
-        <DarkContainer height='70%'>
+        <DarkContainer
+          minHeight='500px'
+          height='70%'
+          innerStyle={{
+            overflowY: 'auto',
+            padding: '20px 0',
+          }}
+        >
           <FlexContainer
             style={{ backgroundColor: 'rgba(0,0,0,0)' }}
             height='100px'
@@ -70,7 +79,10 @@ const MyCards = (props: Props) => {
             />
           </FlexContainer>
           <FlexContainer
-            style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+            style={{
+              backgroundColor: 'rgba(0,0,0,0)',
+              flexWrap: 'wrap',
+            }}
             height='80%'
             justifyContent='space-evenly'
           >

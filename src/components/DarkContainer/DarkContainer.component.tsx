@@ -6,14 +6,18 @@ const DarkContainer = ({
   children,
   height,
   minHeight,
+  style,
+  innerStyle,
 }: {
   children: JSX.Element | JSX.Element[];
   height: string;
   minHeight?: string;
+  style?: {};
+  innerStyle?: {};
 }) => {
   return (
-    <StyledDarkContainer style={{ height, minHeight }}>
-      <StyledDarkContent>{children}</StyledDarkContent>
+    <StyledDarkContainer style={{ height, minHeight, ...style }}>
+      <StyledDarkContent style={innerStyle}>{children}</StyledDarkContent>
     </StyledDarkContainer>
   );
 };
