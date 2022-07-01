@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+
 import DarkContainer from '../DarkContainer/DarkContainer.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import { NeumorphicSelect } from '../Inputs/Inputs.component';
 import NavAnimation from '../NavAnimation/NavAnimation.component';
 
-import Where from './Where.component';
-import What from './What.component';
-import How from './How.component';
+import What from './WhatNewCard.component';
+import How from './HowNewCard.component';
+import WhereNewCard from './WhereNewCard.component';
+import HowNewCard from './HowNewCard.component';
+import WhatNewCard from './WhatNewCard.component';
 
 type Props = {};
 
@@ -28,7 +31,7 @@ const NewFlashcard = (props: Props) => {
             setActiveSection={setActiveSection}
           />
           {activeSection === 'where' ? (
-            <Where
+            <WhereNewCard
               folderToAddTo={folderToAddTo}
               setFolderToAddTo={setFolderToAddTo}
               deck={deckToAddTo}
@@ -38,22 +41,12 @@ const NewFlashcard = (props: Props) => {
             <></>
           )}
           {activeSection === 'how' ? (
-            <Where
-              folderToAddTo={folderToAddTo}
-              setFolderToAddTo={setFolderToAddTo}
-              deck={deckToAddTo}
-              setDeckToAddTo={setDeckToAddTo}
-            />
+            <HowNewCard typeOfCard='Classic' />
           ) : (
             <></>
           )}
           {activeSection === 'what' ? (
-            <Where
-              folderToAddTo={folderToAddTo}
-              setFolderToAddTo={setFolderToAddTo}
-              deck={deckToAddTo}
-              setDeckToAddTo={setDeckToAddTo}
-            />
+            <WhatNewCard typeOfCard='classic' />
           ) : (
             <></>
           )}
