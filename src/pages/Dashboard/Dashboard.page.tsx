@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CirclePercentage from '../../components/CirclePercentage/CirclePercentage.component';
 
 import DarkContainer from '../../components/DarkContainer/DarkContainer.component';
@@ -6,10 +6,22 @@ import FlexContainer from '../../components/FlexContainer/FlexContainer.componen
 import ProgressBar from '../../components/ProgressBar/ProgressBar.component';
 import Sidebar from '../../components/Sidebar/Sidebar.component';
 import StarsContainer from '../../components/StarsContainer/StarsContainer.component';
+import { extractImportantFolders } from '../../database/foldersData';
+import { setImportantFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
+import { RootState } from '../../redux/store';
+import { SubFolderType } from '../../Types/Flashcards';
 
-type Props = {};
+const Dashboard = () => {
+  const dispatch = useAppDispatch();
+  const { folders, importantFolders } = useAppSelector(
+    (state: RootState) => state.folders
+  );
 
-const Dashboard = (props: Props) => {
+  useEffect(() => {
+    dispatch(setImportantFolders(extractImportantFolders(folders)));
+  }, [folders]);
+
   return (
     <FlexContainer justifyContent='space-between'>
       <Sidebar />
@@ -24,15 +36,19 @@ const Dashboard = (props: Props) => {
               style={{ backgroundColor: 'rgba(0,0,0,0)', margin: '10px 0' }}
               justifyContent='space-evenly'
             >
-              <StarsContainer />
+              {/* <StarsContainer /> */}
               <CirclePercentage />
             </FlexContainer>
           </DarkContainer>
           <DarkContainer height='65%' minHeight='400px'>
-            <ProgressBar width='80%' title='Navigation' />
-            <ProgressBar width='20%' title='Meteorology' />
-            <ProgressBar width='45%' title='Mechanics & Systems' />
-            <ProgressBar width='90%' title='Procedures' />
+            {importantFolders.length > 0 &&
+              importantFolders?.map((folder: SubFolderType) => (
+                <ProgressBar
+                  key={folder.title}
+                  width={`${folder.successPercentage}%`}
+                  title={`${folder.title}`}
+                />
+              ))}
           </DarkContainer>
         </FlexContainer>
       </FlexContainer>
