@@ -10,6 +10,7 @@ import MyCards from '../../pages/MyCards/MyCards.component';
 import Create from '../../pages/Create/Create.page';
 import Dashboard from '../../pages/Dashboard/Dashboard.page';
 import Login from '../../pages/Login/Login.page';
+import Study from '../../pages/Study/Study.component';
 
 const RoutesHandler = () => {
   const dispatch = useAppDispatch();
@@ -29,6 +30,7 @@ const RoutesHandler = () => {
       <Route path='/login' element={<Login />} />
       <Route path='/my-cards' element={<MyCards />} />
       <Route path='/create/:type' element={<Create />} />
+      <Route path='/study' element={<Study />} />
     </Routes>
   );
 };

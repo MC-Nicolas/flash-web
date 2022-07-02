@@ -25,12 +25,12 @@ const Dashboard = () => {
   return (
     <FlexContainer justifyContent='space-between'>
       <Sidebar />
-      <FlexContainer flexDirection='column' justifyContent='space-between'>
+      <FlexContainer flexDirection='column' justifyContent='space-evenly'>
         <FlexContainer height='100px' width='100%' justifyContent='center'>
           <h1 style={{ color: 'white', letterSpacing: '2px' }}>Daily Goals</h1>
         </FlexContainer>
 
-        <FlexContainer flexDirection='column' justifyContent='space-between'>
+        <FlexContainer flexDirection='column' justifyContent='space-evenly'>
           <DarkContainer height='30%' minHeight='200px'>
             <FlexContainer
               style={{ backgroundColor: 'rgba(0,0,0,0)', margin: '10px 0' }}
@@ -40,7 +40,7 @@ const Dashboard = () => {
               <CirclePercentage />
             </FlexContainer>
           </DarkContainer>
-          <DarkContainer height='65%' minHeight='400px'>
+          <DarkContainer height='60%' minHeight='400px'>
             {importantFolders.length > 0 &&
               importantFolders?.map((folder: SubFolderType) => (
                 <ProgressBar

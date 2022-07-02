@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export interface StyledFlexContainerProps {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | any;
   justifyContent?:
     | 'center'
     | 'flex-start'

@@ -7,6 +7,7 @@ import NewMenu from '../NewMenu/NewMenu.component';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
+import SchoolIcon from '@mui/icons-material/School';
 
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
@@ -27,6 +28,10 @@ const Sidebar = (props: Props) => {
         justifyContent='space-evenly'
       >
         <NeumorphicButton icon={<HomeIcon />} onClick={() => navigate('/')} />
+        <NeumorphicButton
+          icon={<SchoolIcon />}
+          onClick={() => navigate('/study')}
+        />
         <NeumorphicButton
           icon={<ViewCarouselIcon />}
           onClick={() => navigate('/my-cards')}
