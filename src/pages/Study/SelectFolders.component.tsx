@@ -12,20 +12,18 @@ import { useAppSelector } from '../../redux/redux.hooks';
 const SelectFolders = ({
   setIsSelectionSection,
   folder,
-  foldersOption,
   setFolder,
   subFolder,
   setSubFolder,
-  subFoldersOptions,
 }: {
   setIsSelectionSection: any;
   folder: string;
-  foldersOption: any;
   setFolder: any;
   subFolder: string;
   setSubFolder: any;
-  subFoldersOptions: any;
 }) => {
+  const { folders } = useAppSelector((state) => state.folders);
+
   return (
     <DarkContainer height='80%'>
       <FlexContainer
@@ -37,14 +35,14 @@ const SelectFolders = ({
           style={{ backgroundColor: 'rgba(0,0,0,0)' }}
           value={folder}
           label='Folder'
-          options={foldersOption}
+          options={folders && extractFolders(folders)}
           onChange={setFolder}
         />
         <NeumorphicSelect
           style={{ backgroundColor: 'rgba(0,0,0,0)' }}
           value={subFolder}
           label='Sub Folder'
-          options={subFoldersOptions}
+          options={folders && extractSubFolders(folders)}
           onChange={(e: { target: { value: string } }) =>
             setSubFolder(e.target.value)
           }

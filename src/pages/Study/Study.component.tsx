@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
 
 import Sidebar from '../../components/Sidebar/Sidebar.component';
@@ -12,10 +12,16 @@ type Props = {};
 const Study = (props: Props) => {
   const [isSelectSection, setIsSelectSection] = useState(true);
   const { folders } = useAppSelector((state) => state.folders);
-  const [folder, setFolder] = useState(folders && extractFolders(folders)[0]);
-  const [subFolder, setSubFolder] = useState(
-    folders && extractSubFolders(folders)[0]
-  );
+  const [folder, setFolder] = useState('');
+  const [subFolder, setSubFolder] = useState('');
+
+  useEffect(() => {
+    if (folders) {
+      setFolder(extractFolders(folders)[0]);
+      setSubFolder(extractSubFolders(folders)[0]);
+    }
+  }, [folders]);
+
   return (
     <FlexContainer>
       <Sidebar />
@@ -23,10 +29,14 @@ const Study = (props: Props) => {
         <h1 style={{ color: 'white', letterSpacing: '2px' }}>Study</h1>
         {isSelectSection ? (
           <SelectFolders
+            folder={folder}
+            setFolder={setFolder}
+            subFolder={subFolder}
+            setSubFolder={setSubFolder}
             setIsSelectionSection={() => setIsSelectSection(false)}
           />
         ) : (
-          <StudyFlashcards />
+          <StudyFlashcards folder={folder} subFolder={subFolder} />
         )}
       </FlexContainer>
     </FlexContainer>

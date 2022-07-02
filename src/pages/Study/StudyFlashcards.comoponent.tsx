@@ -5,31 +5,52 @@ import FlippableFlashcard from '../../components/Flashcard/FlippableFlashcard.co
 import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
 import useFlashcards from '../../hooks/useFlashcards.hooks';
 import { useAppSelector } from '../../redux/redux.hooks';
+import { FlashcardType } from '../../Types/Flashcards';
 
-type Props = {};
+type StudyFlashcards = {
+  folder: string;
+  subFolder: string;
+};
 
-const StudyFlashcards = (props: Props) => {
-  const { folders } = useAppSelector((state) => state.folders);
+const StudyFlashcards = ({ folder, subFolder }: StudyFlashcards) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const { flashcards } = useFlashcards('ppl', 'navigation');
+  const [areCardsDone, setAreCardsDone] = useState(false);
+  const { flashcards } = useFlashcards(folder, subFolder);
+  const [activeCard, setActiveCard] = useState(1);
+
+  const handleOnNextCard = () => {
+    if (activeCard < flashcards.length) {
+      setActiveCard(activeCard + 1);
+      setIsFlipped(false);
+    } else setAreCardsDone(true);
+  };
 
   return (
     <DarkContainer height='80%'>
-      <FlippableFlashcard
-        front='Front'
-        back='Back'
-        isFlipped={isFlipped}
-        setIsFlipped={setIsFlipped}
-      />
+      {!areCardsDone
+        ? flashcards?.map((flashcard: FlashcardType) => {
+            if (activeCard === flashcard.number) {
+              return (
+                <FlippableFlashcard
+                  front={flashcard.front}
+                  back={flashcard.back}
+                  isFlipped={isFlipped}
+                  setIsFlipped={setIsFlipped}
+                />
+              );
+            } else return <></>;
+          })
+        : 'You are done!'}
+
       <FlexContainer
         height='100px'
         justifyContent='space-evenly'
         style={{ backgroundColor: 'rgba(0,0,0,0)' }}
       >
-        {isFlipped ? (
+        {isFlipped && !areCardsDone ? (
           <>
-            <button>Fail</button>
-            <button>Succes</button>
+            <button onClick={handleOnNextCard}>Fail</button>
+            <button onClick={handleOnNextCard}>Succes</button>
           </>
         ) : (
           <button onClick={() => setIsFlipped(!isFlipped)}>Flip</button>

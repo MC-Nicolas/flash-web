@@ -9,7 +9,7 @@ const DarkContainer = ({
   style,
   innerStyle,
 }: {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | any;
   height: string;
   minHeight?: string;
   style?: {};
