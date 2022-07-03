@@ -42,10 +42,8 @@ const SelectFolders = ({
           style={{ backgroundColor: 'rgba(0,0,0,0)' }}
           value={subFolder}
           label='Sub Folder'
-          options={folders && extractSubFolders(folders)}
-          onChange={(e: { target: { value: string } }) =>
-            setSubFolder(e.target.value)
-          }
+          options={folders && extractSubFolders(folders, folder)}
+          onChange={setSubFolder}
         />
       </FlexContainer>
       <FlexContainer

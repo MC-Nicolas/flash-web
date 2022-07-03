@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import DarkContainer from '../DarkContainer/DarkContainer.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
@@ -8,38 +8,36 @@ import NavAnimation from '../NavAnimation/NavAnimation.component';
 import WhereNewCard from './WhereNewCard.component';
 import HowNewCard from './HowNewCard.component';
 import WhatNewCard from './WhatNewCard.component';
-import { useAppSelector } from '../../redux/redux.hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import {
   createNewFlashcard,
   extractFolders,
   extractSubFolders,
 } from '../../database/foldersData';
+import { setActiveSubFolder } from '../../redux/create/create';
 
 type Props = {};
 
 const NewFlashcard = (props: Props) => {
+  const { activeFolder, activeSubFolder } = useAppSelector(
+    (state) => state.activeFolder
+  );
+  const dispatch = useAppDispatch();
+
   const { folders } = useAppSelector((state) => state.folders);
   const { email } = useAppSelector((state) => state.user);
-  const [folderToAddTo, setFolderToAddTo] = useState(
-    folders && extractFolders(folders)[0]
-  );
-  const [deckToAddTo, setDeckToAddTo] = useState(
-    folders && extractSubFolders(folders)[0]
-  );
+
   const [activeSection, setActiveSection] = useState('where');
   const [typeOfCard, setTypeOfCard] = useState('classic');
 
   const [frontCardText, setFrontCardText] = useState('');
   const [backCardText, setBackCardText] = useState('');
 
-  const foldersOptions = extractFolders(folders);
-  const decksOptions = extractSubFolders(folders);
-
   const handleOnCreateNewFlashcard = async () => {
     await createNewFlashcard(
       email,
-      folderToAddTo,
-      deckToAddTo,
+      activeFolder,
+      activeSubFolder,
       frontCardText,
       backCardText
     );
@@ -68,12 +66,6 @@ const NewFlashcard = (props: Props) => {
           />
           {activeSection === 'where' ? (
             <WhereNewCard
-              folderToAddTo={folderToAddTo}
-              setFolderToAddTo={setFolderToAddTo}
-              deck={deckToAddTo}
-              setDeckToAddTo={setDeckToAddTo}
-              foldersOptions={foldersOptions ?? ['Meterology']}
-              decksOptions={decksOptions ?? ['FL']}
               handleNavigationSection={() => handleActiveSection('where')}
             />
           ) : (

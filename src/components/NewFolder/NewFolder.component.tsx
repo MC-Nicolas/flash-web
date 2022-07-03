@@ -7,13 +7,17 @@ import FlexContainer from '../FlexContainer/FlexContainer.component';
 import { NeumorphicInput } from '../Inputs/Inputs.component';
 
 import { createNewFolderToDatabase } from '../../database/foldersData';
+import { useNavigate } from 'react-router-dom';
 
 const NewFolder = () => {
+  let navigate = useNavigate();
   const { email } = useAppSelector((state) => state.user);
   const [folderName, setFolderName] = useState('');
 
-  const handleCreateFolder = () => {
-    createNewFolderToDatabase(email, folderName);
+  const handleCreateFolder = async () => {
+    await createNewFolderToDatabase(email, folderName);
+    setFolderName('');
+    navigate('/create/deck');
   };
 
   return (

@@ -21,7 +21,7 @@ const MyCards = (props: Props) => {
     folders && extractFolders(folders)[0]
   );
   const [subFolder, setSubFolder] = useState<string>(
-    folders && extractSubFolders(folders)[0]
+    folders && extractSubFolders(folders, folder)[0]
   );
 
   const [flashcards, setFlashcards] = useState<any>([]);
@@ -35,7 +35,7 @@ const MyCards = (props: Props) => {
   useEffect(() => {
     if (folders) {
       setFolder(extractFolders(folders)[0]);
-      setSubFolder(extractSubFolders(folders)[0]);
+      setSubFolder(extractSubFolders(folders, folder)[0]);
     }
   }, [folders]);
 
@@ -72,7 +72,7 @@ const MyCards = (props: Props) => {
               style={{ backgroundColor: 'rgba(0,0,0,0)' }}
               value={subFolder}
               label='Deck'
-              options={folders && extractSubFolders(folders)}
+              options={folders && extractSubFolders(folders, folder)}
               onChange={(e: { target: { value: string } }) =>
                 setSubFolder(e.target.value)
               }

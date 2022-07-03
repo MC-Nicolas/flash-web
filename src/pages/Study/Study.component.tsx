@@ -18,21 +18,28 @@ const Study = (props: Props) => {
   useEffect(() => {
     if (folders) {
       setFolder(extractFolders(folders)[0]);
-      setSubFolder(extractSubFolders(folders)[0]);
     }
   }, [folders]);
+
+  useEffect(() => {
+    setSubFolder(extractSubFolders(folders, folder)[0]);
+  }, [folder]);
 
   return (
     <FlexContainer>
       <Sidebar />
       <FlexContainer flexDirection='column' justifyContent='space-evenly'>
-        <h1 style={{ color: 'white', letterSpacing: '2px' }}>Study</h1>
+        <h1 style={{ color: 'white', letterSpacing: '2px' }}>{subFolder}</h1>
         {isSelectSection ? (
           <SelectFolders
             folder={folder}
-            setFolder={setFolder}
+            setFolder={(e: { target: { value: string } }) =>
+              setFolder(e.target.value)
+            }
             subFolder={subFolder}
-            setSubFolder={setSubFolder}
+            setSubFolder={(e: { target: { value: string } }) =>
+              setSubFolder(e.target.value)
+            }
             setIsSelectionSection={() => setIsSelectSection(false)}
           />
         ) : (

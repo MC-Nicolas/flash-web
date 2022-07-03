@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 
 import { Checkbox, FormControlLabel } from '@mui/material';
 
-import { useAppSelector } from '../../redux/redux.hooks';
 import { DarkPlainButton } from '../Buttons/Buttons.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import { NeumorphicInput, NeumorphicSelect } from '../Inputs/Inputs.component';
@@ -10,18 +11,33 @@ import { NeumorphicInput, NeumorphicSelect } from '../Inputs/Inputs.component';
 import { theme } from '../../theme/theme';
 import { extractFolders } from '../../database/foldersData';
 import { createNewSubFolder } from '../../database/foldersData';
+import { setActiveFolder } from '../../redux/create/create';
+
 type Props = {};
 
 const NewDeck = (props: Props) => {
+  let navigate = useNavigate();
+
+  const { activeFolder } = useAppSelector((state) => state.activeFolder);
+  const dispatch = useAppDispatch();
+
   const { email } = useAppSelector((state) => state.user);
   const { folders } = useAppSelector((state) => state.folders);
-  const [folderToAddTo, setfolderToAddTo] = useState('');
+
   const [deckName, setDeckName] = useState('');
   const [isImportant, setIsImportant] = useState(false);
 
   const handleOnNewSubFolder = async () => {
-    await createNewSubFolder(email, folderToAddTo, isImportant, deckName);
+    await createNewSubFolder(email, activeFolder, isImportant, deckName);
+    setDeckName('');
+    navigate('/create/flashcard');
   };
+
+  useEffect(() => {
+    if (folders) {
+      dispatch(setActiveFolder(extractFolders(folders[0])));
+    }
+  }, [folders]);
 
   return (
     <FlexContainer>
@@ -33,9 +49,9 @@ const NewDeck = (props: Props) => {
         <NeumorphicSelect
           label='Folder to add deck'
           onChange={(e: { target: { value: string } }) =>
-            setfolderToAddTo(e.target.value)
+            dispatch(setActiveFolder(e.target.value))
           }
-          value={folderToAddTo}
+          value={activeFolder}
           options={extractFolders(folders)}
         />
         <NeumorphicInput

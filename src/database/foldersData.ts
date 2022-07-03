@@ -1,6 +1,9 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { FolderType, SubFolderType } from '../Types/Flashcards';
-import { removeSpecialCharacters } from './DataFormatting';
+import {
+  formatDateToDDMMYYYY,
+  removeSpecialCharacters,
+} from './DataFormatting';
 import database from './firebase';
 
 export const getFoldersFromDB = async (email: string) => {
@@ -22,12 +25,13 @@ export const extractFolders = (folders: any) => {
   return folderNames;
 };
 
-export const extractSubFolders = (folders: any) => {
+export const extractSubFolders = (folders: any, activeFolder: string) => {
   const subFolderNames: string[] = [];
-
   for (const folder in folders) {
-    for (const subFolder in folders[folder]) {
-      subFolderNames.push(subFolder);
+    if (activeFolder === folder) {
+      for (const subFolder in folders[folder]) {
+        subFolderNames.push(subFolder);
+      }
     }
   }
 
@@ -63,11 +67,12 @@ export const extractImportantFolders = (folders: any) => {
 };
 export const extractPercentageFromImportantFoldersSuccess = (folders: any) => {
   if (folders.length > 0) {
-    const total = folders.reduce(
-      (acc: number, curr: SubFolderType) => acc + curr.successPercentage,
-      0
-    );
-    return total / folders.length;
+    // const total = folders.reduce(
+    //   (acc: number, curr: SubFolderType) => acc + curr.successPercentage,
+    //   0
+    // );
+    // return total / folders.length;
+    return 65;
   } else return 0;
 };
 
@@ -80,8 +85,6 @@ export const createNewFolderToDatabase = async (
   await setDoc(doc(database, 'users', email), {
     folders: { ...folders, [removeSpecialCharacters(folderName)]: {} },
   });
-
-  console.log(folders);
 };
 
 export const createNewSubFolder = async (
@@ -100,9 +103,16 @@ export const createNewSubFolder = async (
         [removeSpecialCharacters(folderToAddTo)]: {
           [removeSpecialCharacters(subFolderName)]: {
             timeSpent: 0,
-            successPercentage: 0,
+            successPercentage: [
+              {
+                date: formatDateToDDMMYYYY(new Date()),
+                totalAnswers: 0,
+                success: 0,
+              },
+            ],
             isImportant: isImportant,
             title: subFolderName,
+            flashcards: [],
           },
         },
       },
@@ -142,6 +152,95 @@ export const createNewFlashcard = async (
                 number: flashcards.length + 1,
               },
             ],
+          },
+        },
+      },
+    },
+    { merge: true }
+  );
+};
+
+export const updateSubFolderOnFlashcardResult = async (
+  email: string,
+  folder: string,
+  subFolder: string,
+  isSuccess: boolean
+) => {
+  const folders = await getFoldersFromDB(email);
+
+  // get doc data
+
+  const folderToUpdate: any =
+    folders && folders[removeSpecialCharacters(folder)];
+  const subFolderToUpdate: any =
+    folderToUpdate && folderToUpdate[removeSpecialCharacters(subFolder)];
+
+  const subFolderSuccessPercentages: SuccessPercentagesType[] =
+    await subFolderToUpdate.successPercentages;
+
+  if (subFolderSuccessPercentages) {
+    const percentagesIdx = extractSuccessPercentagesForDate(
+      '05/01/2022',
+      subFolderSuccessPercentages
+    );
+
+    if (percentagesIdx !== -1) {
+      let newPercentageData = subFolderSuccessPercentages;
+      newPercentageData[percentagesIdx].totalAnswers += 1;
+      newPercentageData[percentagesIdx].success += isSuccess ? 1 : 0;
+
+      await updateSuccessPercentage(
+        email,
+        folders,
+        folder,
+        subFolder,
+        newPercentageData
+      );
+    } else {
+      console.log('no data found');
+      // Create new data with day
+    }
+  } else {
+    console.log('no subFolder');
+  }
+};
+
+interface SuccessPercentagesType {
+  date: string;
+  success: number;
+  totalAnswers: number;
+}
+
+export const extractSuccessPercentagesForDate = (
+  date: string,
+  successPercentages: SuccessPercentagesType[]
+): number => {
+  const idx = successPercentages.findIndex(
+    (obj: SuccessPercentagesType) => obj.date === date
+  );
+
+  return idx;
+};
+
+export const updateSuccessPercentage = async (
+  email: string,
+  folders: any,
+  folder: string,
+  subFolder: string,
+  updatedSuccessPercentages: SuccessPercentagesType[]
+) => {
+  const formattedFolder = removeSpecialCharacters(folder);
+  const formattedSubFolder = removeSpecialCharacters(subFolder);
+
+  await setDoc(
+    doc(database, 'users', email),
+    {
+      folders: {
+        ...folders,
+        [formattedFolder]: {
+          [formattedSubFolder]: {
+            ...[formattedSubFolder],
+            successPercentages: updatedSuccessPercentages,
           },
         },
       },

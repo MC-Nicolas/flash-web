@@ -5,9 +5,13 @@ import NewDeck from '../../components/NewDeck/NewDeck.component';
 import NewFlashcard from '../../components/NewFlashcard/NewFlashcard.component';
 import NewFolder from '../../components/NewFolder/NewFolder.component';
 import Sidebar from '../../components/Sidebar/Sidebar.component';
+import { useAppSelector } from '../../redux/redux.hooks';
 import { capitalizeFirstLetter } from '../../utils/functions';
 
 const Create = () => {
+  const { activeFolder, activeSubFolder } = useAppSelector(
+    (state) => state.activeFolder
+  );
   const params = useParams();
 
   return (
@@ -19,7 +23,9 @@ const Create = () => {
         style={{ paddingTop: '20px' }}
       >
         <h1 style={{ color: 'white', letterSpacing: '2px' }}>
-          {capitalizeFirstLetter(params.type)}
+          {`${capitalizeFirstLetter(activeFolder)} > ${capitalizeFirstLetter(
+            activeSubFolder
+          )}`}
         </h1>
         {params.type === 'folder' ? <NewFolder /> : <></>}
         {params.type === 'deck' ? <NewDeck /> : <></>}
