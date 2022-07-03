@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
-import { useAppSelector } from '../../redux/redux.hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import { theme } from '../../theme/theme';
 
 import { DarkPlainButton } from '../Buttons/Buttons.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import { NeumorphicInput } from '../Inputs/Inputs.component';
 
-import { createNewFolderToDatabase } from '../../database/foldersData';
+import {
+  createNewFolderToDatabase,
+  extractFolders,
+} from '../../database/foldersData';
 import { useNavigate } from 'react-router-dom';
+import { setActiveFolder, setFoldersOptions } from '../../redux/create/create';
 
 const NewFolder = () => {
   let navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { folders } = useAppSelector((state) => state.folders);
   const { email } = useAppSelector((state) => state.user);
   const [folderName, setFolderName] = useState('');
 
   const handleCreateFolder = async () => {
     await createNewFolderToDatabase(email, folderName);
+    dispatch(setActiveFolder(folderName));
+    dispatch(setFoldersOptions(extractFolders(folders)));
     setFolderName('');
     navigate('/create/deck');
   };

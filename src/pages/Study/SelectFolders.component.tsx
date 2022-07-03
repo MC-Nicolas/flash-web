@@ -7,22 +7,20 @@ import { NeumorphicSelect } from '../../components/Inputs/Inputs.component';
 
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import { extractFolders, extractSubFolders } from '../../database/foldersData';
-import { useAppSelector } from '../../redux/redux.hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
+import {
+  setActiveFolder,
+  setActiveSubFolder,
+} from '../../redux/foldersFlashcards/foldersFlashcards';
 
 const SelectFolders = ({
   setIsSelectionSection,
-  folder,
-  setFolder,
-  subFolder,
-  setSubFolder,
 }: {
   setIsSelectionSection: any;
-  folder: string;
-  setFolder: any;
-  subFolder: string;
-  setSubFolder: any;
 }) => {
-  const { folders } = useAppSelector((state) => state.folders);
+  const dispatch = useAppDispatch();
+  const { activeFolder, activeSubFolder, subFoldersOptions, foldersOptions } =
+    useAppSelector((state) => state.folders);
 
   return (
     <DarkContainer height='80%'>
@@ -33,17 +31,21 @@ const SelectFolders = ({
       >
         <NeumorphicSelect
           style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-          value={folder}
+          value={activeFolder}
           label='Folder'
-          options={folders && extractFolders(folders)}
-          onChange={setFolder}
+          options={foldersOptions}
+          onChange={(e: { target: { value: string } }) =>
+            dispatch(setActiveFolder(e.target.value))
+          }
         />
         <NeumorphicSelect
           style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-          value={subFolder}
+          value={activeSubFolder}
           label='Sub Folder'
-          options={folders && extractSubFolders(folders, folder)}
-          onChange={setSubFolder}
+          options={subFoldersOptions}
+          onChange={(e: { target: { value: string } }) =>
+            dispatch(setActiveSubFolder(e.target.value))
+          }
         />
       </FlexContainer>
       <FlexContainer

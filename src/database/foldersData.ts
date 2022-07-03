@@ -180,7 +180,7 @@ export const updateSubFolderOnFlashcardResult = async (
 
   if (subFolderSuccessPercentages) {
     const percentagesIdx = extractSuccessPercentagesForDate(
-      '05/01/2022',
+      formatDateToDDMMYYYY(new Date()),
       subFolderSuccessPercentages
     );
 
@@ -197,8 +197,20 @@ export const updateSubFolderOnFlashcardResult = async (
         newPercentageData
       );
     } else {
-      console.log('no data found');
-      // Create new data with day
+      const newPercentageData = [
+        {
+          date: formatDateToDDMMYYYY(new Date()),
+          totalAnswers: 1,
+          success: isSuccess ? 1 : 0,
+        },
+      ];
+      await updateSuccessPercentage(
+        email,
+        folders,
+        folder,
+        subFolder,
+        newPercentageData
+      );
     }
   } else {
     console.log('no subFolder');

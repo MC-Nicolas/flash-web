@@ -18,7 +18,9 @@ type Props = {};
 const NewDeck = (props: Props) => {
   let navigate = useNavigate();
 
-  const { activeFolder } = useAppSelector((state) => state.activeFolder);
+  const { activeFolder, foldersOptions } = useAppSelector(
+    (state) => state.activeFolder
+  );
   const dispatch = useAppDispatch();
 
   const { email } = useAppSelector((state) => state.user);
@@ -33,11 +35,7 @@ const NewDeck = (props: Props) => {
     navigate('/create/flashcard');
   };
 
-  useEffect(() => {
-    if (folders) {
-      dispatch(setActiveFolder(extractFolders(folders[0])));
-    }
-  }, [folders]);
+  console.log(foldersOptions);
 
   return (
     <FlexContainer>
@@ -52,7 +50,7 @@ const NewDeck = (props: Props) => {
             dispatch(setActiveFolder(e.target.value))
           }
           value={activeFolder}
-          options={extractFolders(folders)}
+          options={foldersOptions}
         />
         <NeumorphicInput
           label="Deck's name"

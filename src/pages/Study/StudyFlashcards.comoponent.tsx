@@ -12,20 +12,18 @@ import { updateSubFolderOnFlashcardResult } from '../../database/foldersData';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../redux/redux.hooks';
 
-type StudyFlashcardsProps = {
-  folder: string;
-  subFolder: string;
-};
-
-const StudyFlashcards = ({ folder, subFolder }: StudyFlashcardsProps) => {
+const StudyFlashcards = () => {
+  const { activeFolder, activeSubFolder } = useAppSelector(
+    (state) => state.folders
+  );
   let navigate = useNavigate();
-  // Query DB to flashcard with number and add results:[{date: 543455435, success: true | false }]
-  // Update DB subfolder success percentage
+
   const { email } = useAppSelector((state) => state.user);
   const [isFlipped, setIsFlipped] = useState(false);
   const [areCardsDone, setAreCardsDone] = useState(false);
-  const { flashcards } = useFlashcards(folder, subFolder);
+  const { flashcards } = useFlashcards(activeFolder, activeSubFolder);
   const [activeCard, setActiveCard] = useState(1);
+  console.log(activeFolder, activeSubFolder);
 
   const handleOnNextCard = async (isSuccess: boolean) => {
     if (activeCard < flashcards.length) {
@@ -33,8 +31,8 @@ const StudyFlashcards = ({ folder, subFolder }: StudyFlashcardsProps) => {
       setIsFlipped(false);
       await updateSubFolderOnFlashcardResult(
         email,
-        folder,
-        subFolder,
+        activeFolder,
+        activeSubFolder,
         isSuccess
       );
     } else {
