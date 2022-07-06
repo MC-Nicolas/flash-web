@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ContextMenu from '../../components/ContextMenu/ContextMenu.component';
 
 import DarkContainer from '../../components/DarkContainer/DarkContainer.component';
 import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
@@ -98,10 +99,14 @@ const MyCards = (props: Props) => {
             justifyContent='space-evenly'
           >
             {flashcards.map((flashcard: { front: string; back: string }) => (
-              <PreviewCard
+              <ContextMenu
                 key={flashcard.front + flashcard.back}
-                cardFrontText={flashcard.front}
-                cardBackText={flashcard.back}
+                clickableElement={
+                  <PreviewCard
+                    cardFrontText={flashcard.front}
+                    cardBackText={flashcard.back}
+                  />
+                }
               />
             ))}
           </FlexContainer>

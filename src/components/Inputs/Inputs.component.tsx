@@ -96,14 +96,13 @@ export const WhiteInput = ({
   placeholder,
   value,
   isTextArea,
+  style,
 }: NeumorphicInputProps) => {
   return (
     <FlexContainer
-      height='100px'
-      width='100px'
       flexDirection='column'
-      alignItems='flex-start'
-      style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+      alignItems='center'
+      style={{ backgroundColor: 'rgba(0,0,0,0)', ...style }}
     >
       <p
         style={{
@@ -117,6 +116,7 @@ export const WhiteInput = ({
       </p>
       {isTextArea ? (
         <textarea
+          style={{ width: '90%', height: '50%' }}
           className='white-input'
           onChange={onChange}
           placeholder={placeholder}

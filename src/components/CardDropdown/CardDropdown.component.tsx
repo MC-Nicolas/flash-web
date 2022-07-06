@@ -35,8 +35,30 @@ const CardDropdown = ({ onChange }: { onChange: any }) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={() => onChange('variable')}>Variable</MenuItem>
-        <MenuItem onClick={() => onChange('text')}>Text</MenuItem>
+        <MenuItem
+          onClick={() => {
+            onChange('variable');
+            handleClose();
+          }}
+        >
+          Variable
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            onChange('text');
+            handleClose();
+          }}
+        >
+          Text
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            onChange('result');
+            handleClose();
+          }}
+        >
+          Result
+        </MenuItem>
       </Menu>
     </div>
   );
