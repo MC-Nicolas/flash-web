@@ -9,12 +9,14 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 interface HowNewCardProps {
   typeOfCard: string;
   onChange: any;
+  options: string[];
   handleNavigationSection: () => void;
 }
 
 const HowNewCard = ({
   typeOfCard,
   onChange,
+  options,
   handleNavigationSection,
 }: HowNewCardProps) => {
   return (
@@ -28,7 +30,7 @@ const HowNewCard = ({
         style={{ backgroundColor: 'rgba(0,0,0,0)' }}
         label='Type Of Card'
         value={typeOfCard}
-        options={['classic']}
+        options={options}
         onChange={onChange}
       />
       <NeumorphicButton

@@ -74,6 +74,7 @@ const NewFlashcard = (props: Props) => {
           {activeSection === 'how' ? (
             <HowNewCard
               typeOfCard={typeOfCard}
+              options={['classic', 'QCM', 'Smartcard', 'Timed']}
               onChange={(e: { target: { value: string } }) =>
                 setTypeOfCard(e.target.value)
               }
@@ -88,7 +89,7 @@ const NewFlashcard = (props: Props) => {
               setFrontCardText={setFrontCardText}
               backCardText={backCardText}
               setBackCardText={setBackCardText}
-              typeOfCard='classic'
+              typeOfCard={typeOfCard}
               onClick={handleOnCreateNewFlashcard}
             />
           ) : (

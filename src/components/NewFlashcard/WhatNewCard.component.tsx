@@ -5,6 +5,7 @@ import Flashcard from '../Flashcard/Flashcard.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import SmartCard from './SmartCard.component';
 
 type WhatNewCardProps = {
   typeOfCard: string;
@@ -33,18 +34,23 @@ const WhatNewCard = ({
         style={{ backgroundColor: 'rgba(0,0,0,0)' }}
         justifyContent='space-evenly'
       >
-        <Flashcard
-          text={frontCardText}
-          onChange={(e: { target: { value: string } }) =>
-            setFrontCardText(e.target.value)
-          }
-        />
-        <Flashcard
-          text={backCardText}
-          onChange={(e: { target: { value: string } }) =>
-            setBackCardText(e.target.value)
-          }
-        />
+        {typeOfCard === 'classic' && (
+          <>
+            <Flashcard
+              text={frontCardText}
+              onChange={(e: { target: { value: string } }) =>
+                setFrontCardText(e.target.value)
+              }
+            />
+            <Flashcard
+              text={backCardText}
+              onChange={(e: { target: { value: string } }) =>
+                setBackCardText(e.target.value)
+              }
+            />
+          </>
+        )}
+        {typeOfCard.toLowerCase() === 'smartcard' && <SmartCard />}
       </FlexContainer>
       <NeumorphicButton icon={<DoneAllIcon />} onClick={onClick} />
     </FlexContainer>

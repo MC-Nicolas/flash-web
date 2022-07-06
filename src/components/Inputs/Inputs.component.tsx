@@ -11,6 +11,7 @@ type NeumorphicInputProps = {
   value: string;
   style?: {};
   options?: string[];
+  isTextArea?: boolean;
 };
 
 export const NeumorphicInput = ({
@@ -85,6 +86,51 @@ export const NeumorphicSelect = ({
           </option>
         ))}
       </select>
+    </FlexContainer>
+  );
+};
+
+export const WhiteInput = ({
+  label,
+  onChange,
+  placeholder,
+  value,
+  isTextArea,
+}: NeumorphicInputProps) => {
+  return (
+    <FlexContainer
+      height='100px'
+      width='100px'
+      flexDirection='column'
+      alignItems='flex-start'
+      style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+    >
+      <p
+        style={{
+          fontSize: '18px',
+          color: 'white',
+          letterSpacing: '2px',
+          paddingBottom: '10px',
+        }}
+      >
+        {label}
+      </p>
+      {isTextArea ? (
+        <textarea
+          className='white-input'
+          onChange={onChange}
+          placeholder={placeholder}
+          value={value}
+        />
+      ) : (
+        <input
+          className='white-input'
+          type='text'
+          onChange={onChange}
+          placeholder={placeholder}
+          value={value}
+        />
+      )}
     </FlexContainer>
   );
 };

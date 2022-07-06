@@ -22,3 +22,16 @@
   color: white;
   letter-spacing: 2px;
 }
+
+.white-input {
+  height: 50px;
+  width: 100%;
+  font-size: 18px;
+  padding-left: 10px;
+  background: #e5e5e5;
+  box-shadow: inset -8px -8px 16px rgba(0, 0, 0, 0.05),
+    inset 8px 8px 16px rgba(0, 0, 0, 0.05);
+  border-radius: 9px;
+  color: black;
+  letter-spacing: 2px;
+}

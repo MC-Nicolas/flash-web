@@ -11,33 +11,44 @@ import {
   extractFolders,
   extractSubFolders,
 } from '../../database/foldersData';
-import { useAppSelector } from '../../redux/redux.hooks';
+import {
+  setActiveFolder,
+  setActiveSubFolder,
+  setSubFoldersOptions,
+} from '../../redux/foldersFlashcards/foldersFlashcards';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 
 type Props = {};
 
 const MyCards = (props: Props) => {
-  const { folders } = useAppSelector((state) => state.folders);
-  const [folder, setFolder] = useState<string>(
-    folders && extractFolders(folders)[0]
-  );
-  const [subFolder, setSubFolder] = useState<string>(
-    folders && extractSubFolders(folders, folder)[0]
-  );
+  const dispatch = useAppDispatch();
+
+  const {
+    folders,
+    activeFolder,
+    activeSubFolder,
+    subFoldersOptions,
+    foldersOptions,
+  } = useAppSelector((state) => state.folders);
 
   const [flashcards, setFlashcards] = useState<any>([]);
 
   useEffect(() => {
-    if (folders) {
-      setFlashcards(extractFlashcards(folders, folder, subFolder));
+    if (folders && activeFolder && activeSubFolder) {
+      setFlashcards(extractFlashcards(folders, activeFolder, activeSubFolder));
     }
-  }, [folder, subFolder]);
+  }, [activeFolder, activeSubFolder]);
 
   useEffect(() => {
-    if (folders) {
-      setFolder(extractFolders(folders)[0]);
-      setSubFolder(extractSubFolders(folders, folder)[0]);
+    if (!activeFolder) {
+      dispatch(setActiveFolder(extractFolders(folders)[0]));
     }
   }, [folders]);
+
+  useEffect(() => {
+    dispatch(setActiveSubFolder(extractSubFolders(folders, activeFolder)[0]));
+    dispatch(setSubFoldersOptions(extractSubFolders(folders, activeFolder)));
+  }, [activeFolder]);
 
   return (
     <FlexContainer>
@@ -61,20 +72,20 @@ const MyCards = (props: Props) => {
           >
             <NeumorphicSelect
               style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-              value={folder}
+              value={activeFolder}
               label='Folder'
-              options={folders && extractFolders(folders)}
+              options={foldersOptions}
               onChange={(e: { target: { value: string } }) =>
-                setFolder(e.target.value)
+                dispatch(setActiveFolder(e.target.value))
               }
             />
             <NeumorphicSelect
               style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-              value={subFolder}
+              value={activeSubFolder}
               label='Deck'
-              options={folders && extractSubFolders(folders, folder)}
+              options={subFoldersOptions}
               onChange={(e: { target: { value: string } }) =>
-                setSubFolder(e.target.value)
+                dispatch(setActiveSubFolder(e.target.value))
               }
             />
           </FlexContainer>

@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { extractPercentageFromImportantFoldersSuccess } from '../../database/foldersData';
-import { useAppSelector } from '../../redux/redux.hooks';
-import { RootState } from '../../redux/store';
 
 import './CirclePercentage.component.style.scss';
 
-const CirclePercentage = () => {
-  const { importantFolders } = useAppSelector(
-    (state: RootState) => state.folders
-  );
+const CirclePercentage = ({ percentage }: { percentage: number }) => {
   const [totalPercentage, setTotalPercentage] = useState(0);
 
   useEffect(() => {
-    const percentage =
-      extractPercentageFromImportantFoldersSuccess(importantFolders);
-
     let count = 0;
 
     const updateCount = () => {
@@ -25,8 +16,8 @@ const CirclePercentage = () => {
         clearInterval(counter);
       }
     };
-    let counter = setInterval(updateCount, 50);
-  }, [importantFolders]);
+    let counter = percentage > 0 ? setInterval(updateCount, 50) : 0;
+  }, [percentage]);
 
   return (
     <div className='progress-circle'>

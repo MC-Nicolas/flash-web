@@ -10,9 +10,8 @@ const useFlashcards = (folder: string, subFolder: string) => {
 
   useEffect(() => {
     if (folder && subFolder) {
-      const flashcardsData: any = folders[folder][subFolder].flashcards;
-
-      setFlashcards(flashcardsData);
+      const flashcardsData: any = folders[folder][subFolder]?.flashcards;
+      if (flashcardsData) setFlashcards(flashcardsData);
     }
   }, [folders, folder, subFolder]);
 

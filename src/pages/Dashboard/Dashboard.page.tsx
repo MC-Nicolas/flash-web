@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CirclePercentage from '../../components/CirclePercentage/CirclePercentage.component';
 
 import DarkContainer from '../../components/DarkContainer/DarkContainer.component';
@@ -10,10 +10,16 @@ import { extractImportantFolders } from '../../database/foldersData';
 import { setImportantFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import { RootState } from '../../redux/store';
-import { SubFolderType } from '../../Types/Flashcards';
+import { FolderType, SubFolderType } from '../../Types/Flashcards';
+import {
+  extractTodayFromImportantFolderSuccessPercentages,
+  formatPercentage,
+} from '../../utils/dataFormatting';
+import { calculatePercentage } from '../../utils/functions';
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
+  const [totalPercentage, setTotalPercentage] = useState(0);
   const { folders, importantFolders } = useAppSelector(
     (state: RootState) => state.folders
   );
@@ -21,6 +27,31 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(setImportantFolders(extractImportantFolders(folders)));
   }, [folders]);
+
+  useEffect(() => {
+    const percentages = [];
+    let sum = 0;
+    if (importantFolders.length > 0) {
+      for (const folder of importantFolders) {
+        const todaysResults =
+          extractTodayFromImportantFolderSuccessPercentages(folder);
+        const percentage = calculatePercentage(
+          todaysResults,
+          folder.flashcards.length
+        );
+        percentages.push(percentage);
+        sum += percentage;
+      }
+      setTotalPercentage(sum / percentages.length);
+    }
+  }, [importantFolders]);
+
+  const extractTotalAnswersByNumberOfFlaschards = (folder: any) => {
+    const todaysTotalAnswers =
+      extractTodayFromImportantFolderSuccessPercentages(folder);
+    const numberOfFlashcards = folder.flashcards.length;
+    return calculatePercentage(todaysTotalAnswers, numberOfFlashcards);
+  };
 
   return (
     <FlexContainer justifyContent='space-between'>
@@ -37,7 +68,7 @@ const Dashboard = () => {
               justifyContent='space-evenly'
             >
               {/* <StarsContainer /> */}
-              <CirclePercentage />
+              <CirclePercentage percentage={totalPercentage} />
             </FlexContainer>
           </DarkContainer>
           <DarkContainer height='60%' minHeight='400px'>
@@ -45,7 +76,7 @@ const Dashboard = () => {
               importantFolders?.map((folder: SubFolderType) => (
                 <ProgressBar
                   key={folder.title}
-                  width={`${folder.successPercentage}%`}
+                  width={`${extractTotalAnswersByNumberOfFlaschards(folder)}%`}
                   title={`${folder.title}`}
                 />
               ))}

@@ -12,6 +12,7 @@ import {
   setActiveFolder,
   setActiveSubFolder,
 } from '../../redux/foldersFlashcards/foldersFlashcards';
+import useFlashcards from '../../hooks/useFlashcards.hooks';
 
 const SelectFolders = ({
   setIsSelectionSection,
@@ -21,6 +22,7 @@ const SelectFolders = ({
   const dispatch = useAppDispatch();
   const { activeFolder, activeSubFolder, subFoldersOptions, foldersOptions } =
     useAppSelector((state) => state.folders);
+  const { flashcards } = useFlashcards(activeFolder, activeSubFolder);
 
   return (
     <DarkContainer height='80%'>
@@ -53,10 +55,14 @@ const SelectFolders = ({
         height='60%'
         justifyContent='space-evenly'
       >
-        <NeumorphicButton
-          icon={<PlayCircleFilledWhiteIcon />}
-          onClick={setIsSelectionSection}
-        />
+        {flashcards && flashcards.length > 0 ? (
+          <NeumorphicButton
+            icon={<PlayCircleFilledWhiteIcon />}
+            onClick={setIsSelectionSection}
+          />
+        ) : (
+          <h1>No flashcards</h1>
+        )}
       </FlexContainer>
     </DarkContainer>
   );

@@ -46,8 +46,9 @@ export const extractFlashcards = (
   const flashcards: any[] = [];
 
   const folderData = folders[folder];
-
-  subFolder && flashcards.push(...folderData[subFolder]?.flashcards);
+  if (folderData[subFolder]) {
+    subFolder && flashcards.push(...folderData[subFolder].flashcards);
+  }
 
   return flashcards;
 };
@@ -103,7 +104,7 @@ export const createNewSubFolder = async (
         [removeSpecialCharacters(folderToAddTo)]: {
           [removeSpecialCharacters(subFolderName)]: {
             timeSpent: 0,
-            successPercentage: [
+            successPercentages: [
               {
                 date: formatDateToDDMMYYYY(new Date()),
                 totalAnswers: 0,
