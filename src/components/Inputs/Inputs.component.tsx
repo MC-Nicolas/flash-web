@@ -4,15 +4,15 @@ import FlexContainer from '../FlexContainer/FlexContainer.component';
 
 import './Inputs.component.style.scss';
 
-type NeumorphicInputProps = {
-  label: string;
+interface NeumorphicInputProps {
+  label?: string;
   onChange: any;
   placeholder?: string;
   value: string;
   style?: {};
   options?: string[];
   isTextArea?: boolean;
-};
+}
 
 export const NeumorphicInput = ({
   label,
@@ -134,3 +134,50 @@ export const WhiteInput = ({
     </FlexContainer>
   );
 };
+
+interface SelectOptionsTypes {
+  name: string;
+  value: string | number;
+  symbol: string;
+}
+interface BasicSelectProps extends Omit<NeumorphicInputProps, 'options'> {
+  options: string[] | SelectOptionsTypes[];
+  isVariable?: boolean;
+  onChange: any;
+}
+
+export const BasicSelect = ({
+  options,
+  isVariable,
+  onChange,
+}: BasicSelectProps) => {
+  return (
+    <select
+      onChange={onChange}
+      style={{ fontSize: '18px', padding: '10px', width: '100px' }}
+    >
+      {options.map((option: string | SelectOptionsTypes) => {
+        if (typeof option === 'string') {
+          return (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          );
+        } else {
+          return (
+            <option key={option.name} value={option.value}>
+              {option.name} {option.value} {option.symbol}
+            </option>
+          );
+        }
+      })}
+    </select>
+  );
+};
+
+{
+  /* setResultOperation({
+          ...resultOperation,
+          firstOperand: e.target.value,
+        }) */
+}

@@ -8,6 +8,8 @@ import CardDropdown from '../CardDropdown/CardDropdown.component';
 import AddVariable from './AddVariable.component';
 import { BasicModal } from '../Modals/Modals.component';
 import Result from './Result.component';
+import { BasicParagraph } from '../Texts/Texts.component';
+import { randomNum } from '../../utils/smartcard';
 
 type Props = {};
 
@@ -18,19 +20,29 @@ const SmartCard = (props: Props) => {
     name: '',
     value: 0,
     symbol: '',
+    type: 'number',
   });
+  const [RNValues, setRNValues] = useState({ min: 0, max: 0 });
   const [textToAdd, setTextToAdd] = useState<string>('');
   const [elements, setElements] = useState<any>([]);
 
+  useEffect(() => {
+    console.log(elements);
+  }, [elements]);
+
   const handleAddNewTextOrVariable = () => {
+    const { type: typeOfResult, name, value, symbol } = variableToAdd;
+    console.log(typeOfResult);
+
     if (typeOfAdd === 'variable') {
       setElements([
         ...elements,
         {
           type: 'variable',
-          name: variableToAdd.name,
-          value: variableToAdd.value,
-          symbol: variableToAdd.symbol,
+          typeOfVariable: typeOfResult,
+          name: name,
+          value: typeOfResult === 'number' ? value : RNValues,
+          symbol: symbol,
         },
       ]);
     } else {
@@ -46,6 +58,12 @@ const SmartCard = (props: Props) => {
     setVariableToAdd({ name: '', value: 0, symbol: '' });
     setTextToAdd('');
   };
+
+  const handleVariableChange = (e: any, propToChange: string, state: any) => {
+    setVariableToAdd({ ...state, [propToChange]: e.target.value });
+  };
+
+  const { name, value, type, symbol } = variableToAdd;
 
   return (
     <FlexContainer
@@ -70,24 +88,14 @@ const SmartCard = (props: Props) => {
           <BasicModal onClose={() => setModalIsVisible(false)}>
             {typeOfAdd === 'variable' && (
               <AddVariable
-                name={variableToAdd.name}
-                value={variableToAdd.value}
-                symbol={variableToAdd.symbol}
-                onNameChange={(e: any) =>
-                  setVariableToAdd({ ...variableToAdd, name: e.target.value })
-                }
-                onValueChange={(e: any) =>
-                  setVariableToAdd({
-                    ...variableToAdd,
-                    value: e.target.value,
-                  })
-                }
-                onSymbolChange={(e: any) =>
-                  setVariableToAdd({
-                    ...variableToAdd,
-                    symbol: e.target.value,
-                  })
-                }
+                name={name}
+                value={value}
+                symbol={symbol}
+                typeOfVariable={type}
+                state={variableToAdd}
+                setState={handleVariableChange}
+                RNState={RNValues}
+                setRNState={setRNValues}
               />
             )}
             {typeOfAdd === 'text' && (
@@ -120,30 +128,30 @@ const SmartCard = (props: Props) => {
         flexDirection='column'
       >
         {elements.map((element: any) => {
+          console.log(
+            randomNum(parseInt(element.value.min), parseInt(element.value.max))
+          );
           if (element.type === 'variable') {
-            return (
-              <p
-                style={{
-                  color: 'white',
-                  fontSize: '24px',
-                  letterSpacing: '2px',
-                }}
-              >
-                &nbsp;{`${element.value}${element.symbol}`}&nbsp;
-              </p>
-            );
+            if (element.typeOfVariable === 'random number') {
+              return (
+                <BasicParagraph
+                  key={element.name}
+                  text={`${element.name} = ${randomNum(
+                    parseInt(element.value.min),
+                    parseInt(element.value.max)
+                  )}${element.symbol}`}
+                />
+              );
+            } else {
+              return (
+                <BasicParagraph
+                  key={element.name}
+                  text={`${element.value}${element.symbol}`}
+                />
+              );
+            }
           } else if (element.type === 'text') {
-            return (
-              <p
-                style={{
-                  color: 'white',
-                  fontSize: '24px',
-                  letterSpacing: '2px',
-                }}
-              >
-                &nbsp;{element.text}&nbsp;
-              </p>
-            );
+            return <BasicParagraph text={`${element.text}`} />;
           }
         })}
       </FlexContainer>

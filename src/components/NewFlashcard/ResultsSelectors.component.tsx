@@ -1,19 +1,21 @@
 import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { mathOperators } from '../../utils/smartcard';
 
 import FlexContainer from '../FlexContainer/FlexContainer.component';
+import { BasicSelect } from '../Inputs/Inputs.component';
 
 type ResultsSelectorsProps = {
   variables: any;
   onSaveVariable: any;
+  onRemoveVariable: any;
   resultsOperationsLength: number;
 };
-
-const mathOperators = ['+', '-', '*', '/'];
 
 const ResultsSelectors = ({
   variables,
   onSaveVariable,
+  onRemoveVariable,
   resultsOperationsLength,
 }: ResultsSelectorsProps) => {
   const [resultOperation, setResultOperation] = useState<any>({
@@ -29,7 +31,6 @@ const ResultsSelectors = ({
       step: resultsOperationsLength + 1,
     });
   }, [resultsOperationsLength]);
-  console.log(variables);
 
   return (
     <FlexContainer
@@ -37,53 +38,39 @@ const ResultsSelectors = ({
       justifyContent='space-evenly'
       style={{ backgroundColor: 'rgba(0,0,0,0)' }}
     >
-      <select
+      <BasicSelect
+        options={variables}
         onChange={(e: any) =>
           setResultOperation({
             ...resultOperation,
             firstOperand: e.target.value,
           })
         }
-        style={{ fontSize: '18px', padding: '10px', minWidth: '120px' }}
-      >
-        {variables.map((variable: any) => (
-          <option key={variable.name} value={variable.value}>
-            {variable.name} {variable.value} {variable.symbol}
-          </option>
-        ))}
-      </select>
-      <select
+        value={resultOperation.firstOperand}
+      />
+      <BasicSelect
+        value={'test'}
         onChange={(e: any) =>
           setResultOperation({
             ...resultOperation,
             operator: e.target.value,
           })
         }
-        style={{ fontSize: '18px', padding: '10px', minWidth: '75px' }}
-      >
-        {mathOperators.map((operator: string) => (
-          <option key={operator} value={operator}>
-            {operator}
-          </option>
-        ))}
-      </select>
-      <select
-        style={{ fontSize: '18px', padding: '10px', minWidth: '120px' }}
+        options={mathOperators}
+      />
+
+      <BasicSelect
+        options={variables}
         onChange={(e: any) =>
           setResultOperation({
             ...resultOperation,
             secondOperand: e.target.value,
           })
         }
-      >
-        {variables.map((variable: any) => (
-          <option key={variable.name} value={variable.value}>
-            {variable.name} {variable.value} {variable.symbol}
-          </option>
-        ))}
-      </select>
+        value={resultOperation.secondOperand}
+      />
       <Button onClick={() => onSaveVariable(resultOperation)}>Save</Button>
-      <Button color='error' onClick={() => console.log('remove var')}>
+      <Button color='error' onClick={onRemoveVariable}>
         Clear
       </Button>
     </FlexContainer>
