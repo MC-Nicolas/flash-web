@@ -52,3 +52,19 @@ export const NewElementButton = () => {
     </div>
   );
 };
+
+export const RadioButton = ({
+  isActive,
+  onClick,
+}: {
+  isActive: boolean;
+  onClick: () => void;
+}) => {
+  return (
+    <div className='radioButton-container' onClick={onClick}>
+      <div
+        className={`radioButton-inner ${isActive ? 'radioButton-active' : ''}`}
+      ></div>
+    </div>
+  );
+};

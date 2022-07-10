@@ -6,6 +6,7 @@ import FlexContainer from '../FlexContainer/FlexContainer.component';
 
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import SmartCard from './SmartCard.component';
+import QCMFlashcard from './QCMFlashcard.component';
 
 type WhatNewCardProps = {
   typeOfCard: string;
@@ -51,6 +52,7 @@ const WhatNewCard = ({
           </>
         )}
         {typeOfCard.toLowerCase() === 'smartcard' && <SmartCard />}
+        {typeOfCard.toLowerCase() === 'qcm' && <QCMFlashcard />}
       </FlexContainer>
       <NeumorphicButton icon={<DoneAllIcon />} onClick={onClick} />
     </FlexContainer>

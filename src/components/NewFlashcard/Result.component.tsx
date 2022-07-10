@@ -18,11 +18,6 @@ type ResultProps = {
   onChange: any;
 };
 
-const valuess = [
-  { step: 1, firstOperand: 'a', operator: '+', secondOperand: 'b' },
-  { step: 2, firstOperand: 'step-1', operator: '+', secondOperand: 'a' },
-];
-
 const Result = ({ onChange }: ResultProps) => {
   const dispatch = useAppDispatch();
   const { variables, operations } = useAppSelector(

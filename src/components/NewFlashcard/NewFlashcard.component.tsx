@@ -15,20 +15,25 @@ import {
   extractSubFolders,
 } from '../../database/foldersData';
 import { setActiveSubFolder } from '../../redux/create/create';
+import {
+  selectTypeOfFlashcard,
+  setTypeOfFlashcard,
+} from '../../redux/newFlashcard/newFlashcard';
 
 type Props = {};
+const typesOfFlashcards = ['classic', 'QCM', 'smartcard', 'timed'];
 
 const NewFlashcard = (props: Props) => {
   const { activeFolder, activeSubFolder } = useAppSelector(
     (state) => state.activeFolder
   );
   const dispatch = useAppDispatch();
+  const typeOfFlashcard = useAppSelector(selectTypeOfFlashcard);
 
   const { folders } = useAppSelector((state) => state.folders);
   const { email } = useAppSelector((state) => state.user);
 
   const [activeSection, setActiveSection] = useState('where');
-  const [typeOfCard, setTypeOfCard] = useState('classic');
 
   const [frontCardText, setFrontCardText] = useState('');
   const [backCardText, setBackCardText] = useState('');
@@ -73,10 +78,10 @@ const NewFlashcard = (props: Props) => {
           )}
           {activeSection === 'how' ? (
             <HowNewCard
-              typeOfCard={typeOfCard}
+              typeOfCard={typeOfFlashcard}
               options={['classic', 'QCM', 'Smartcard', 'Timed']}
               onChange={(e: { target: { value: string } }) =>
-                setTypeOfCard(e.target.value)
+                dispatch(setTypeOfFlashcard(e.target.value))
               }
               handleNavigationSection={() => handleActiveSection('how')}
             />
@@ -89,7 +94,7 @@ const NewFlashcard = (props: Props) => {
               setFrontCardText={setFrontCardText}
               backCardText={backCardText}
               setBackCardText={setBackCardText}
-              typeOfCard={typeOfCard}
+              typeOfCard={typeOfFlashcard}
               onClick={handleOnCreateNewFlashcard}
             />
           ) : (

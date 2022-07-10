@@ -4,9 +4,17 @@ import styled from 'styled-components';
 
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 
-const Flashcard = ({ text, onChange }: { text: string; onChange: any }) => {
+const Flashcard = ({
+  text,
+  onChange,
+  style,
+}: {
+  text: string;
+  onChange: any;
+  style?: {};
+}) => {
   return (
-    <StyledFlexContainer>
+    <StyledFlexContainer style={{ ...style }}>
       <textarea
         style={{
           textAlign: 'center',

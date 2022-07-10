@@ -170,9 +170,29 @@ export const BasicSelect = ({ options, onChange }: BasicSelectProps) => {
   );
 };
 
-{
-  /* setResultOperation({
-          ...resultOperation,
-          firstOperand: e.target.value,
-        }) */
-}
+export const BasicInput = ({
+  text,
+  onChange,
+  placeholder = '',
+}: {
+  text: string;
+  onChange: any;
+  placeholder: string;
+}) => {
+  return (
+    <input
+      value={text}
+      onChange={onChange}
+      placeholder={placeholder}
+      style={{
+        backgroundColor: 'rgba(0,0,0,0)',
+        marginLeft: '10px',
+        border: 'none',
+        fontSize: '20px',
+        letterSpacing: '1px',
+        color: 'white',
+        outline: 'none',
+      }}
+    />
+  );
+};

@@ -23,6 +23,7 @@ const initialState: initialStateType = {
   typeOfAdd: 'variable',
   modalIsVisible: false,
   operations: [],
+  typeOfFlashcard: 'classic',
 };
 
 export const newFlashcard = createSlice({
@@ -68,6 +69,9 @@ export const newFlashcard = createSlice({
         return i !== action.payload;
       });
     },
+    setTypeOfFlashcard: (state, action) => {
+      state.typeOfFlashcard = action.payload;
+    },
   },
 });
 
@@ -81,6 +85,8 @@ export const selectVariablesByVar = (state: RootState) =>
   state.newFlashcard.variables.filter(
     (variable) => variable.type === 'variable'
   );
+export const selectTypeOfFlashcard = (state: RootState) =>
+  state.newFlashcard.typeOfFlashcard;
 
 export const {
   addNewVariable,
@@ -90,6 +96,7 @@ export const {
   addNewOperation,
   changeOperation,
   removeOperation,
+  setTypeOfFlashcard,
 } = newFlashcard.actions;
 
 export default newFlashcard.reducer;

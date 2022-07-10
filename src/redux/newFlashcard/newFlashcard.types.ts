@@ -12,4 +12,5 @@ export interface initialStateType {
   typeOfAdd: string;
   modalIsVisible: boolean;
   operations: {}[];
+  typeOfFlashcard: 'classic' | 'QCM' | 'smartcard' | 'timed';
 }

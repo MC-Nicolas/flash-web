@@ -21,15 +21,18 @@ import { VariableType } from '../../redux/newFlashcard/newFlashcard.types';
 type Props = {};
 
 const getResultFromOperation = (operation: any, variables: any[]) => {
+  let result = 0;
   const { firstOperand, operator, secondOperand } = operation;
   const firstOperandValue = findValueByName(firstOperand, variables);
-  console.log(firstOperandValue);
   const secondOperandValue = findValueByName(secondOperand, variables);
-  console.log(secondOperandValue);
-  const result = handleCalculation[operator](
-    firstOperandValue,
-    secondOperandValue
-  );
+  console.log('is obj in obj');
+  console.log(firstOperandValue, secondOperandValue);
+
+  if (typeof firstOperandValue === 'object') {
+    const firstOpInObj = findValueByName(firstOperandValue.name, variables);
+  }
+
+  result += handleCalculation[operator](firstOperandValue, secondOperandValue);
 
   return result;
 };
@@ -164,8 +167,22 @@ const SmartCard = (props: Props) => {
                 variables
               );
 
-              if (typeof firstOpValue === 'object') {
-                getResultFromOperation(firstOpValue, variables);
+              if (
+                typeof firstOpValue === 'object' ||
+                typeof secondOpValue === 'object'
+              ) {
+                if (typeof firstOpValue === 'object') {
+                  totalResult += getResultFromOperation(
+                    firstOpValue,
+                    variables
+                  );
+                }
+                if (typeof secondOpValue === 'object') {
+                  totalResult += getResultFromOperation(
+                    secondOpValue,
+                    variables
+                  );
+                }
               } else {
                 totalResult =
                   totalResult +
