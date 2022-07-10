@@ -9,13 +9,42 @@ import AddVariable from './AddVariable.component';
 import { BasicModal } from '../Modals/Modals.component';
 import Result from './Result.component';
 import { BasicParagraph } from '../Texts/Texts.component';
-import { randomNum } from '../../utils/smartcard';
+import { handleCalculation, randomNum } from '../../utils/smartcard';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
+import {
+  addNewVariable,
+  setModalIsVisible,
+  setTypeOfAdd,
+} from '../../redux/newFlashcard/newFlashcard';
+import { VariableType } from '../../redux/newFlashcard/newFlashcard.types';
 
 type Props = {};
 
+const getResultFromOperation = (operation: any, variables: any[]) => {
+  const { firstOperand, operator, secondOperand } = operation;
+  const firstOperandValue = findValueByName(firstOperand, variables);
+  console.log(firstOperandValue);
+  const secondOperandValue = findValueByName(secondOperand, variables);
+  console.log(secondOperandValue);
+  const result = handleCalculation[operator](
+    firstOperandValue,
+    secondOperandValue
+  );
+
+  return result;
+};
+
+const findValueByName = (name: string, variables: any[]) => {
+  const variable = variables.find((v) => v.name === name);
+  return variable ? variable.value : null;
+};
+
 const SmartCard = (props: Props) => {
-  const [typeOfAdd, setTypeOfAdd] = useState<String>('variable');
-  const [modalIsVisible, setModalIsVisible] = useState(true);
+  const dispatch = useAppDispatch();
+  const { typeOfAdd, modalIsVisible, variables } = useAppSelector(
+    (state) => state.newFlashcard
+  );
+
   const [variableToAdd, setVariableToAdd] = useState<any>({
     name: '',
     value: 0,
@@ -24,35 +53,32 @@ const SmartCard = (props: Props) => {
   });
   const [RNValues, setRNValues] = useState({ min: 0, max: 0 });
   const [textToAdd, setTextToAdd] = useState<string>('');
-  const [elements, setElements] = useState<any>([]);
-
-  useEffect(() => {
-    console.log(elements);
-  }, [elements]);
 
   const handleAddNewTextOrVariable = () => {
-    const { type: typeOfResult, name, value, symbol } = variableToAdd;
-    console.log(typeOfResult);
+    const {
+      type: typeOfResult = 'number',
+      name,
+      value,
+      symbol,
+    } = variableToAdd;
 
     if (typeOfAdd === 'variable') {
-      setElements([
-        ...elements,
-        {
+      dispatch(
+        addNewVariable({
           type: 'variable',
           typeOfVariable: typeOfResult,
           name: name,
           value: typeOfResult === 'number' ? value : RNValues,
           symbol: symbol,
-        },
-      ]);
+        })
+      );
     } else {
-      setElements([
-        ...elements,
-        {
+      dispatch(
+        addNewVariable({
           type: 'text',
-          text: textToAdd,
-        },
-      ]);
+          value: textToAdd,
+        })
+      );
     }
 
     setVariableToAdd({ name: '', value: 0, symbol: '' });
@@ -63,7 +89,7 @@ const SmartCard = (props: Props) => {
     setVariableToAdd({ ...state, [propToChange]: e.target.value });
   };
 
-  const { name, value, type, symbol } = variableToAdd;
+  const { name, value, type = 'number', symbol } = variableToAdd;
 
   return (
     <FlexContainer
@@ -79,13 +105,13 @@ const SmartCard = (props: Props) => {
       >
         <CardDropdown
           onChange={(val: string) => {
-            setModalIsVisible(true);
-            setTypeOfAdd(val);
+            dispatch(setModalIsVisible(true));
+            dispatch(setTypeOfAdd(val));
           }}
         />
 
         {modalIsVisible && (
-          <BasicModal onClose={() => setModalIsVisible(false)}>
+          <BasicModal>
             {typeOfAdd === 'variable' && (
               <AddVariable
                 name={name}
@@ -107,10 +133,7 @@ const SmartCard = (props: Props) => {
               />
             )}
             {typeOfAdd === 'result' && (
-              <Result
-                elements={elements}
-                onChange={(e: any) => setTextToAdd(e.target.value)}
-              />
+              <Result onChange={(e: any) => setTextToAdd(e.target.value)} />
             )}
             <Button
               color='error'
@@ -127,20 +150,32 @@ const SmartCard = (props: Props) => {
         justifyContent='center'
         flexDirection='column'
       >
-        {elements.map((element: any) => {
-          console.log(
-            randomNum(parseInt(element.value.min), parseInt(element.value.max))
-          );
+        {variables.map((element: any) => {
           if (element.type === 'variable') {
-            if (element.typeOfVariable === 'random number') {
+            if (typeof element.value === 'object') {
+              let totalResult = 0;
+              const firstOpValue = findValueByName(
+                element.value.firstOperand,
+                variables
+              );
+
+              const secondOpValue = findValueByName(
+                element.value.secondOperand,
+                variables
+              );
+
+              if (typeof firstOpValue === 'object') {
+                getResultFromOperation(firstOpValue, variables);
+              } else {
+                totalResult =
+                  totalResult +
+                  handleCalculation[element.value.operator](
+                    parseFloat(firstOpValue),
+                    parseFloat(secondOpValue)
+                  );
+              }
               return (
-                <BasicParagraph
-                  key={element.name}
-                  text={`${element.name} = ${randomNum(
-                    parseInt(element.value.min),
-                    parseInt(element.value.max)
-                  )}${element.symbol}`}
-                />
+                <BasicParagraph key={element.name} text={`${totalResult}`} />
               );
             } else {
               return (

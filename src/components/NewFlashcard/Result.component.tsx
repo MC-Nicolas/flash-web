@@ -1,5 +1,13 @@
 import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import {
+  addNewOperation,
+  addNewVariable,
+  changeOperation,
+  removeOperation,
+  selectVariablesByVar,
+} from '../../redux/newFlashcard/newFlashcard';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import { handleCalculation } from '../../utils/smartcard';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import { NeumorphicSelect } from '../Inputs/Inputs.component';
@@ -8,83 +16,39 @@ import ResultsSelectors from './ResultsSelectors.component';
 
 type ResultProps = {
   onChange: any;
-  elements: { type: string }[];
 };
 
-const mathOperators = ['+', '-', '*', '/'];
+const valuess = [
+  { step: 1, firstOperand: 'a', operator: '+', secondOperand: 'b' },
+  { step: 2, firstOperand: 'step-1', operator: '+', secondOperand: 'a' },
+];
 
-const removeElementFromArray = (
-  elements: any,
-  indexOfElementToRemove: number
-) => {
-  const newElements = [...elements];
-  newElements.splice(indexOfElementToRemove, 1);
-  return newElements;
-};
+const Result = ({ onChange }: ResultProps) => {
+  const dispatch = useAppDispatch();
+  const { variables, operations } = useAppSelector(
+    (state) => state.newFlashcard
+  );
+  const variablesTypeVar = useAppSelector(selectVariablesByVar);
 
-const changeElementInResultOperations = (
-  elements: any,
-  elementToChange: any,
-  index: number
-) => {
-  const newElements = [...elements];
-  newElements[index] = { ...elementToChange, step: index + 1 };
-  return newElements;
-};
+  const handleAddNewVariable = (operation: any, index: number) => {
+    const { firstOperand, operator, secondOperand } = operation;
+    const newOperation = {
+      ...operation,
+      step: index + 1,
+      name: `step-${index + 1}`,
+    };
 
-const Result = ({ onChange, elements }: ResultProps) => {
-  const [result, setResult] = useState(0);
-  const [resultOperations, setResultOperations] = useState<any>([]);
-  const [variables, setVariables] = useState<any>([]);
-
-  useEffect(() => {
-    const varElements = [];
-    for (const element of elements) {
-      element.type === 'variable' && varElements.push(element);
-    }
-    setVariables(varElements);
-  }, [elements]);
-
-  useEffect(() => {
-    if (resultOperations && resultOperations.length > 0) {
-      resultOperations.forEach(
-        (operation: {
-          operator: string;
-          firstOperand: string;
-          secondOperand: string;
-          step: number;
-        }) => {
-          const { operator, firstOperand, secondOperand, step } = operation;
-
-          const varExists = variables.find(
-            (variable: any) => variable.name === `Step ${step}: `
-          );
-
-          if (operator && firstOperand && secondOperand) {
-            const res = handleCalculation[operation.operator](
-              operation.firstOperand,
-              operation.secondOperand
-            );
-
-            if (!varExists) {
-              const newVariable = {
-                name: `Step ${step}: `,
-                type: 'variable',
-                value: res,
-                symbol: '',
-              };
-              setResult(res);
-              setVariables([...variables, newVariable]);
-            }
-          }
-        }
-      );
-    }
-  }, [resultOperations]);
-
-  useEffect(() => {
-    // console.log(variables);
-  }, [variables]);
+    dispatch(changeOperation({ index, operation: newOperation }));
+    dispatch(
+      addNewVariable({
+        type: 'variable',
+        name: `step-${index + 1}`,
+        value: { firstOperand, operator, secondOperand },
+        symbol: '',
+        typeOfVariable: 'number',
+      })
+    );
+  };
 
   return (
     <FlexContainer
@@ -102,37 +66,33 @@ const Result = ({ onChange, elements }: ResultProps) => {
         flexDirection='column'
         justifyContent='center'
       >
-        {resultOperations.map((operation: any, index: number) => (
+        {operations.map((operation: any, index: number) => (
           <ResultsSelectors
             key={index}
-            resultsOperationsLength={resultOperations.length}
-            onRemoveVariable={() => {
-              const newElements = removeElementFromArray(
-                resultOperations,
-                index
-              );
-              setResultOperations(newElements);
-            }}
-            onSaveVariable={(e: any) => {
-              const newElements = changeElementInResultOperations(
-                resultOperations,
-                e,
-                index
-              );
-              setResultOperations(newElements);
-            }}
-            variables={variables}
+            resultsOperationsLength={operations.length}
+            onRemoveCalculatedVariable={() => dispatch(removeOperation(index))}
+            onSaveCalculatedVariable={(operation: any) =>
+              handleAddNewVariable(operation, index)
+            }
+            variables={variablesTypeVar}
           />
         ))}
         <Button
           variant='contained'
-          onClick={() => setResultOperations([...resultOperations, {}])}
+          onClick={() =>
+            dispatch(
+              addNewOperation({
+                firstOperand: '',
+                secondOperand: '+',
+                operator: '',
+                step: 1,
+              })
+            )
+          }
         >
           Then
         </Button>
       </FlexContainer>
-
-      <BasicParagraph text={`Result: ${result}`} />
     </FlexContainer>
   );
 };

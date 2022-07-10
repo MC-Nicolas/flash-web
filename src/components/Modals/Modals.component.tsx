@@ -1,13 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setModalIsVisible } from '../../redux/newFlashcard/newFlashcard';
 import DarkContainer from '../DarkContainer/DarkContainer.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 
 interface BasicModalProps {
   children?: any;
-  onClose: () => void;
 }
 
-export const BasicModal = ({ children, onClose }: BasicModalProps) => {
+export const BasicModal = ({ children }: BasicModalProps) => {
+  const dispatch = useDispatch();
   return (
     <>
       <div
@@ -51,7 +53,7 @@ export const BasicModal = ({ children, onClose }: BasicModalProps) => {
                 backgroundColor: '#222',
                 cursor: 'pointer',
               }}
-              onClick={onClose}
+              onClick={() => dispatch(setModalIsVisible(false))}
             >
               x
             </button>

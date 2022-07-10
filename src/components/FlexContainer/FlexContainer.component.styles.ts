@@ -11,6 +11,8 @@ export interface StyledFlexContainerProps {
     | 'space-around';
   alignItems?: 'center' | 'flex-start' | 'flex-end' | 'stretch';
   flexDirection?: 'row' | 'column';
+  flexWrap?: boolean;
+  gap?: string;
   width?: string;
   height?: string;
   isTest?: boolean;
@@ -32,4 +34,7 @@ export const StyledFlexContainer = styled.div`
   height: ${(props: StyledFlexContainerProps) => props.height ?? '100%'};
   background-color: ${(props: StyledFlexContainerProps) =>
     props.theme.colors.mainBackground};
+  flex-wrap: ${(props: StyledFlexContainerProps) =>
+    props.flexWrap === true ? 'wrap' : 'nowrap'};
+  gap: ${(props: StyledFlexContainerProps) => props.gap ?? '5px'};
 `;

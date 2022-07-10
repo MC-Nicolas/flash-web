@@ -1,36 +1,35 @@
 import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { mathOperators } from '../../utils/smartcard';
+import { BasicSelect } from '../Inputs/Inputs.component';
 
 import FlexContainer from '../FlexContainer/FlexContainer.component';
-import { BasicSelect } from '../Inputs/Inputs.component';
+
+import { formatVariables } from '../../utils/dataFormatting';
 
 type ResultsSelectorsProps = {
   variables: any;
-  onSaveVariable: any;
-  onRemoveVariable: any;
+  onSaveCalculatedVariable: any;
+  onRemoveCalculatedVariable: any;
   resultsOperationsLength: number;
 };
 
 const ResultsSelectors = ({
   variables,
-  onSaveVariable,
-  onRemoveVariable,
+  onSaveCalculatedVariable,
+  onRemoveCalculatedVariable,
   resultsOperationsLength,
 }: ResultsSelectorsProps) => {
   const [resultOperation, setResultOperation] = useState<any>({
     firstOperand: '',
     operator: '*',
     secondOperand: '',
-    step: 0,
   });
+  const [formattedVariables, setFormattedVariables] = useState<any>();
 
   useEffect(() => {
-    setResultOperation({
-      ...resultOperation,
-      step: resultsOperationsLength + 1,
-    });
-  }, [resultsOperationsLength]);
+    setFormattedVariables(formatVariables(variables));
+  }, [variables]);
 
   return (
     <FlexContainer
@@ -39,7 +38,7 @@ const ResultsSelectors = ({
       style={{ backgroundColor: 'rgba(0,0,0,0)' }}
     >
       <BasicSelect
-        options={variables}
+        options={formattedVariables ?? []}
         onChange={(e: any) =>
           setResultOperation({
             ...resultOperation,
@@ -49,7 +48,7 @@ const ResultsSelectors = ({
         value={resultOperation.firstOperand}
       />
       <BasicSelect
-        value={'test'}
+        value={''}
         onChange={(e: any) =>
           setResultOperation({
             ...resultOperation,
@@ -60,7 +59,7 @@ const ResultsSelectors = ({
       />
 
       <BasicSelect
-        options={variables}
+        options={formattedVariables ?? []}
         onChange={(e: any) =>
           setResultOperation({
             ...resultOperation,
@@ -69,8 +68,10 @@ const ResultsSelectors = ({
         }
         value={resultOperation.secondOperand}
       />
-      <Button onClick={() => onSaveVariable(resultOperation)}>Save</Button>
-      <Button color='error' onClick={onRemoveVariable}>
+      <Button onClick={() => onSaveCalculatedVariable(resultOperation)}>
+        Save
+      </Button>
+      <Button color='error' onClick={onRemoveCalculatedVariable}>
         Clear
       </Button>
     </FlexContainer>

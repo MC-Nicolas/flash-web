@@ -1,4 +1,5 @@
 import { formatDateToDDMMYYYY } from '../database/DataFormatting';
+import { randomNum } from './smartcard';
 
 export interface ImportantFolderType {
   successPercentages: { date: string; totalAnswers: number; success: number }[];
@@ -38,4 +39,27 @@ export const formatPercentage = (percentageObj: {
   if (success && totalAnswers) {
     return Math.floor((success / totalAnswers) * 100);
   } else return 0;
+};
+
+interface VariableType {
+  type: string;
+  typeOfVariable: string;
+  value: string | { min: string; max: string };
+  name: string;
+}
+
+export const formatVariables = (variables: VariableType[]): VariableType[] => {
+  const formattedVariables: any[] = [];
+  variables.forEach((variable) => {
+    if (typeof variable.value === 'string') {
+      formattedVariables.push(variable);
+    } else {
+      const { min, max } = variable.value;
+      formattedVariables.push({
+        ...variable,
+        value: randomNum(parseFloat(min), parseFloat(max)),
+      });
+    }
+  });
+  return formattedVariables;
 };

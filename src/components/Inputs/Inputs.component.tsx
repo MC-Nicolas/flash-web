@@ -142,15 +142,10 @@ interface SelectOptionsTypes {
 }
 interface BasicSelectProps extends Omit<NeumorphicInputProps, 'options'> {
   options: string[] | SelectOptionsTypes[];
-  isVariable?: boolean;
   onChange: any;
 }
 
-export const BasicSelect = ({
-  options,
-  isVariable,
-  onChange,
-}: BasicSelectProps) => {
+export const BasicSelect = ({ options, onChange }: BasicSelectProps) => {
   return (
     <select
       onChange={onChange}
@@ -165,8 +160,8 @@ export const BasicSelect = ({
           );
         } else {
           return (
-            <option key={option.name} value={option.value}>
-              {option.name} {option.value} {option.symbol}
+            <option key={option.name} value={option.name}>
+              {option.name}
             </option>
           );
         }
