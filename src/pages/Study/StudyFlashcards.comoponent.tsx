@@ -23,7 +23,6 @@ const StudyFlashcards = () => {
   const [areCardsDone, setAreCardsDone] = useState(false);
   const { flashcards } = useFlashcards(activeFolder, activeSubFolder);
   const [activeCard, setActiveCard] = useState(1);
-  console.log(activeFolder, activeSubFolder);
 
   const handleOnNextCard = async (isSuccess: boolean) => {
     if (activeCard < flashcards.length) {

@@ -11,7 +11,10 @@ import {
   extractFolders,
 } from '../../database/foldersData';
 import { useNavigate } from 'react-router-dom';
-import { setActiveFolder, setFoldersOptions } from '../../redux/create/create';
+import {
+  setActiveFolder,
+  setFoldersOptions,
+} from '../../redux/foldersFlashcards/foldersFlashcards';
 
 const NewFolder = () => {
   let navigate = useNavigate();

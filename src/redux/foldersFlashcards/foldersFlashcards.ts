@@ -37,6 +37,7 @@ export const foldersSlice = createSlice({
 
       state.folders = action.payload;
       state.foldersOptions = foldersOptions;
+      state.activeFolder = foldersOptions[0];
       state.importantFolders = importantFolders;
       state.subFoldersOptions = subFoldersOptions;
       state.activeSubFolder = subFoldersOptions[0];

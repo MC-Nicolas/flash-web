@@ -5,14 +5,22 @@ import type { RootState } from '../store';
 import { UserType } from '../../Types/UserTypes';
 
 const initialState: UserType = {
-  email: 'mace_nicolas@icloud.com',
+  email: '',
+  isUserAuthenticated: false,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setUserEmail: (state, action) => {
+      state.email = action.payload;
+      state.isUserAuthenticated = true;
+    },
+  },
 });
+
+export const { setUserEmail } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
 

@@ -1,22 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
 import NewDeck from '../../components/NewDeck/NewDeck.component';
 import NewFlashcard from '../../components/NewFlashcard/NewFlashcard.component';
 import NewFolder from '../../components/NewFolder/NewFolder.component';
 import Sidebar from '../../components/Sidebar/Sidebar.component';
-import { extractFolders, extractSubFolders } from '../../database/foldersData';
-import {
-  setActiveFolder,
-  setActiveSubFolder,
-  setFoldersOptions,
-} from '../../redux/create/create';
-import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
+
+import { useAppSelector } from '../../redux/redux.hooks';
 import { capitalizeFirstLetter } from '../../utils/functions';
 
 const Create = () => {
   const { activeFolder, activeSubFolder } = useAppSelector(
-    (state) => state.activeFolder
+    (state) => state.folders
   );
   const params = useParams();
 

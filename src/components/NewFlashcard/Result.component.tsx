@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   addNewOperation,
   addNewVariable,
@@ -8,10 +8,8 @@ import {
   selectVariablesByVar,
 } from '../../redux/newFlashcard/newFlashcard';
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
-import { handleCalculation } from '../../utils/smartcard';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
-import { NeumorphicSelect } from '../Inputs/Inputs.component';
-import { BasicParagraph } from '../Texts/Texts.component';
+
 import ResultsSelectors from './ResultsSelectors.component';
 
 type ResultProps = {

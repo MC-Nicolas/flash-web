@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { NeumorphicInput, WhiteInput } from '../Inputs/Inputs.component';
 import CardDropdown from '../CardDropdown/CardDropdown.component';
 import AddVariable from './AddVariable.component';
-import { BasicModal } from '../Modals/Modals.component';
+import { BasicModal } from '../Inputs/Modals/Modals.component';
 import Result from './Result.component';
 import { BasicParagraph } from '../Texts/Texts.component';
 import { handleCalculation, randomNum } from '../../utils/smartcard';

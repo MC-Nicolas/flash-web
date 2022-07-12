@@ -1,39 +1,84 @@
-import React from 'react';
-import { useAppSelector } from '../../redux/redux.hooks';
-
-import { TextField, withStyles } from '@mui/material';
-
-import { DarkPlainButton } from '../../components/Buttons/Buttons.component';
+import React, { useEffect, useState } from 'react';
 
 import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
 
-import styled from 'styled-components';
+import { Button } from '@mui/material';
+import { BorderBottomInput } from '../../components/Inputs/Inputs.component';
+import { BasicText } from '../../components/Texts/Texts.component.stories';
+import { loginOrSignup } from '../../database/users';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
+import { setUserEmail } from '../../redux/user/UserSlice';
 
 const Login = () => {
-  const { theme } = useAppSelector((state) => state.theme);
+  let navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { isUserAuthenticated } = useAppSelector((state) => state.user);
+  const [isLogin, setIsLogin] = useState(true);
+  const [loginForm, setLoginForm] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleLoginOrSignup = () => {
+    const isSuccess = loginOrSignup(
+      isLogin,
+      loginForm.email,
+      loginForm.password
+    );
+    if (isSuccess) {
+      dispatch(setUserEmail(loginForm.email));
+      navigate('/');
+    }
+  };
+
+  useEffect(() => {
+    if (isUserAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isUserAuthenticated]);
+
   return (
     <FlexContainer
       flexDirection='column'
-      width='50%'
-      height='700px'
-      justifyContent='space-between'
+      width='380px'
+      height='500px'
+      justifyContent='space-evenly'
+      style={{
+        backgroundColor: '#222',
+        borderRadius: '10px',
+        boxShadow:
+          '5px 3px 10px 0px rgba(0, 0, 0, 0.5), -3px -3px 6px 0px rgba(255, 255, 255, 0.05)',
+      }}
     >
-      <FlexContainer height='40%'>
-        <h1>Logo</h1>
-      </FlexContainer>
-      <FlexContainer
-        flexDirection='column'
-        height='80%'
-        justifyContent='space-evenly'
-      >
-        <TextField
-          sx={{ color: '#fff' }}
-          id='standard-basic'
-          label='Standard'
-          variant='standard'
-        />
-        <TextField id='standard-basic' label='Standard' variant='standard' />
-        <DarkPlainButton theme={theme} title='Login' />
+      <BasicText text={`${isLogin ? 'Login' : 'Sign Up'}`} fontSize='28px' />
+      <BorderBottomInput
+        text={loginForm.email}
+        placeholder='Email'
+        onChange={(e: { target: { value: string } }) =>
+          setLoginForm({ ...loginForm, email: e.target.value })
+        }
+      />
+      <BorderBottomInput
+        text={loginForm.password}
+        placeholder='Password'
+        onChange={(e: { target: { value: string } }) =>
+          setLoginForm({ ...loginForm, password: e.target.value })
+        }
+      />
+
+      <Button variant='contained' onClick={handleLoginOrSignup}>
+        {isLogin ? 'LOGIN' : 'SIGN UP'}
+      </Button>
+      <FlexContainer height='40px' style={{ backgroundColor: 'rgba(0,0,0,0)' }}>
+        <p style={{ color: 'lightgrey' }}>
+          {isLogin
+            ? "Don't have an account yet ?"
+            : 'Have an account already ?'}
+        </p>
+        <Button color='success' onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? 'SIGN UP' : 'LOGIN'}
+        </Button>
       </FlexContainer>
     </FlexContainer>
   );

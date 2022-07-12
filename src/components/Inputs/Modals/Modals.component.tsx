@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setModalIsVisible } from '../../redux/newFlashcard/newFlashcard';
-import DarkContainer from '../DarkContainer/DarkContainer.component';
-import FlexContainer from '../FlexContainer/FlexContainer.component';
+import { setModalIsVisible } from '../../../redux/newFlashcard/newFlashcard';
+import DarkContainer from '../../DarkContainer/DarkContainer.component';
+import FlexContainer from '../../FlexContainer/FlexContainer.component';
 
 interface BasicModalProps {
   children?: any;

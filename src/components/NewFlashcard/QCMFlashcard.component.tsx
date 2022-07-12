@@ -6,12 +6,9 @@ import Flashcard from '../Flashcard/Flashcard.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import TextOptionWithButton from '../TextOptionWithButton/TextOptionWithButton.component';
 
-type Props = {};
-
-const QCMFlashcard = (props: Props) => {
+const QCMFlashcard = () => {
   const dispatch = useAppDispatch();
   const { flashcard } = useAppSelector((state) => state.activeFolder);
-
   const [frontSideIsActive, setFrontSideIsActive] = useState(true);
 
   return (

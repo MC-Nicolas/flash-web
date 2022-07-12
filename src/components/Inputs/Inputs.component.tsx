@@ -196,3 +196,31 @@ export const BasicInput = ({
     />
   );
 };
+
+export const BorderBottomInput = ({
+  text,
+  onChange,
+  placeholder = '',
+}: {
+  text: string;
+  onChange: any;
+  placeholder: string;
+}) => {
+  return (
+    <input
+      value={text}
+      onChange={onChange}
+      placeholder={placeholder}
+      style={{
+        backgroundColor: 'rgba(0,0,0,0)',
+        border: 'none',
+        borderBottom: '1px solid white',
+        fontSize: '18px',
+        letterSpacing: '1px',
+        color: 'white',
+        outline: 'none',
+        padding: '0 0 6px 0',
+      }}
+    />
+  );
+};

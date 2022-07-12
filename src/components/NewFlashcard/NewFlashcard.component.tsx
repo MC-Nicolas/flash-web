@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import DarkContainer from '../DarkContainer/DarkContainer.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
@@ -9,12 +9,8 @@ import WhereNewCard from './WhereNewCard.component';
 import HowNewCard from './HowNewCard.component';
 import WhatNewCard from './WhatNewCard.component';
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
-import {
-  createNewFlashcard,
-  extractFolders,
-  extractSubFolders,
-} from '../../database/foldersData';
-import { setActiveSubFolder } from '../../redux/create/create';
+import { createNewFlashcard } from '../../database/foldersData';
+
 import {
   selectTypeOfFlashcard,
   setTypeOfFlashcard,
@@ -23,14 +19,12 @@ import {
 type Props = {};
 
 const NewFlashcard = (props: Props) => {
-  const { activeFolder, activeSubFolder } = useAppSelector(
-    (state) => state.activeFolder
-  );
   const dispatch = useAppDispatch();
-  const typeOfFlashcard = useAppSelector(selectTypeOfFlashcard);
-
-  const { folders } = useAppSelector((state) => state.folders);
   const { email } = useAppSelector((state) => state.user);
+  const { activeFolder, activeSubFolder } = useAppSelector(
+    (state) => state.folders
+  );
+  const typeOfFlashcard = useAppSelector(selectTypeOfFlashcard);
 
   const [activeSection, setActiveSection] = useState('where');
 

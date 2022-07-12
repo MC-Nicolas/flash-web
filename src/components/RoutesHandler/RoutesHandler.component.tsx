@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { useAppDispatch } from '../../redux/redux.hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 
 import { getFoldersFromDB } from '../../database/foldersData';
 import { setFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
@@ -14,15 +14,18 @@ import Study from '../../pages/Study/Study.component';
 
 const RoutesHandler = () => {
   const dispatch = useAppDispatch();
+  const { email, isUserAuthenticated } = useAppSelector((state) => state.user);
 
   const getFolders = async () => {
-    const folders = await getFoldersFromDB('mace_nicolas@icloud.com');
-    dispatch(setFolders(folders));
+    if (email && isUserAuthenticated) {
+      const folders = await getFoldersFromDB(email);
+      dispatch(setFolders(folders));
+    }
   };
 
   useEffect(() => {
     getFolders();
-  }, []);
+  }, [email, isUserAuthenticated]);
 
   return (
     <Routes>
