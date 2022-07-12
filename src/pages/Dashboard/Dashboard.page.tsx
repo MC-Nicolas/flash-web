@@ -5,28 +5,18 @@ import DarkContainer from '../../components/DarkContainer/DarkContainer.componen
 import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
 import ProgressBar from '../../components/ProgressBar/ProgressBar.component';
 import Sidebar from '../../components/Sidebar/Sidebar.component';
-import StarsContainer from '../../components/StarsContainer/StarsContainer.component';
-import { extractImportantFolders } from '../../database/foldersData';
-import { setImportantFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
-import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
+
+import { useAppSelector } from '../../redux/redux.hooks';
 import { RootState } from '../../redux/store';
-import { FolderType, SubFolderType } from '../../Types/Flashcards';
-import {
-  extractTodayFromImportantFolderSuccessPercentages,
-  formatPercentage,
-} from '../../utils/dataFormatting';
+import { SubFolderType } from '../../Types/Flashcards';
+import { extractTodayFromImportantFolderSuccessPercentages } from '../../utils/dataFormatting';
 import { calculatePercentage } from '../../utils/functions';
 
 const Dashboard = () => {
-  const dispatch = useAppDispatch();
   const [totalPercentage, setTotalPercentage] = useState(0);
-  const { folders, importantFolders } = useAppSelector(
+  const { importantFolders } = useAppSelector(
     (state: RootState) => state.folders
   );
-
-  useEffect(() => {
-    dispatch(setImportantFolders(extractImportantFolders(folders)));
-  }, [folders]);
 
   useEffect(() => {
     const percentages = [];

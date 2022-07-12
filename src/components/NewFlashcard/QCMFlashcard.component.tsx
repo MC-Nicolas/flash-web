@@ -1,5 +1,7 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
+import { setFlashcardBack, setFlashcardFront } from '../../redux/create/create';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import Flashcard from '../Flashcard/Flashcard.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import TextOptionWithButton from '../TextOptionWithButton/TextOptionWithButton.component';
@@ -7,11 +9,10 @@ import TextOptionWithButton from '../TextOptionWithButton/TextOptionWithButton.c
 type Props = {};
 
 const QCMFlashcard = (props: Props) => {
-  const [text, setText] = useState('');
-  const [frontSideIsActive, setFrontSideIsActive] = useState(false);
-  const [QCMAnswers, setQCMAnswers] = useState([
-    { text: '', isCorrect: false },
-  ]);
+  const dispatch = useAppDispatch();
+  const { flashcard } = useAppSelector((state) => state.activeFolder);
+
+  const [frontSideIsActive, setFrontSideIsActive] = useState(true);
 
   return (
     <FlexContainer
@@ -27,7 +28,13 @@ const QCMFlashcard = (props: Props) => {
           variant='contained'
           color='success'
           onClick={() => {
-            setQCMAnswers([...QCMAnswers, { text: '', isCorrect: false }]);
+            const QCMAnswers = flashcard.back.length;
+            dispatch(
+              setFlashcardBack({
+                index: QCMAnswers,
+                value: { text: '', isCorrect: false },
+              })
+            );
             setFrontSideIsActive(false);
           }}
         >
@@ -44,9 +51,9 @@ const QCMFlashcard = (props: Props) => {
       {frontSideIsActive ? (
         <Flashcard
           style={{ width: '80%', height: '300px' }}
-          text={text}
+          text={flashcard.front}
           onChange={(e: { target: { value: string } }) =>
-            setText(e.target.value)
+            dispatch(setFlashcardFront(e.target.value))
           }
         />
       ) : (
@@ -62,23 +69,37 @@ const QCMFlashcard = (props: Props) => {
             flexDirection='column'
             justifyContent='space-evenly'
           >
-            {QCMAnswers.map((answer, index) => (
-              <TextOptionWithButton
-                key={index}
-                text={answer.text}
-                isCorrect={answer.isCorrect}
-                onCorrectChange={() => {
-                  const newAnswers = [...QCMAnswers];
-                  newAnswers[index].isCorrect = !answer.isCorrect;
-                  setQCMAnswers(newAnswers);
-                }}
-                setText={(e: any) => {
-                  const newAnswers = [...QCMAnswers];
-                  newAnswers[index].text = e.target.value;
-                  setQCMAnswers(newAnswers);
-                }}
-              />
-            ))}
+            {flashcard.back.map(
+              (answer: { text: string; isCorrect: boolean }, index: number) => (
+                <TextOptionWithButton
+                  key={index}
+                  text={answer.text}
+                  isCorrect={answer.isCorrect}
+                  onCorrectChange={() => {
+                    dispatch(
+                      setFlashcardBack({
+                        index,
+                        value: {
+                          text: answer.text,
+                          isCorrect: !answer.isCorrect,
+                        },
+                      })
+                    );
+                  }}
+                  setText={(e: any) => {
+                    dispatch(
+                      setFlashcardBack({
+                        index,
+                        value: {
+                          text: e.target.value,
+                          isCorrect: answer.isCorrect,
+                        },
+                      })
+                    );
+                  }}
+                />
+              )
+            )}
           </FlexContainer>
         </FlexContainer>
       )}

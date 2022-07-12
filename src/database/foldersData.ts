@@ -127,7 +127,7 @@ export const createNewFlashcard = async (
   folderToAddTo: string,
   subFolderName: string,
   flashcardFront: string,
-  flashcardBack: string
+  flashcardBack: string | {}
 ) => {
   const folders = await getFoldersFromDB(email);
 

@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { extractImportantFolders } from '../../database/foldersData';
+import {
+  extractFolders,
+  extractImportantFolders,
+  extractSubFolders,
+} from '../../database/foldersData';
 import { FolderType } from '../../Types/Flashcards';
 
 import type { RootState } from '../store';
@@ -24,13 +28,30 @@ export const foldersSlice = createSlice({
   initialState,
   reducers: {
     setFolders: (state, action) => {
+      const foldersOptions = extractFolders(action.payload);
+      const importantFolders = extractImportantFolders(action.payload);
+      const subFoldersOptions = extractSubFolders(
+        action.payload,
+        foldersOptions[0]
+      );
+
       state.folders = action.payload;
+      state.foldersOptions = foldersOptions;
+      state.importantFolders = importantFolders;
+      state.subFoldersOptions = subFoldersOptions;
+      state.activeSubFolder = subFoldersOptions[0];
     },
     setImportantFolders: (state, action) => {
       state.importantFolders = action.payload;
     },
     setActiveFolder: (state, action) => {
+      const subFoldersOptions = extractSubFolders(
+        state.folders,
+        action.payload
+      );
       state.activeFolder = action.payload;
+      state.subFoldersOptions = subFoldersOptions;
+      state.activeSubFolder = subFoldersOptions[0];
     },
     setActiveSubFolder: (state, action) => {
       state.activeSubFolder = action.payload;

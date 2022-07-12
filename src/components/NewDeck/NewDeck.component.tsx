@@ -9,9 +9,8 @@ import FlexContainer from '../FlexContainer/FlexContainer.component';
 import { NeumorphicInput, NeumorphicSelect } from '../Inputs/Inputs.component';
 
 import { theme } from '../../theme/theme';
-import { extractFolders } from '../../database/foldersData';
 import { createNewSubFolder } from '../../database/foldersData';
-import { setActiveFolder } from '../../redux/create/create';
+import { setActiveFolder } from '../../redux/foldersFlashcards/foldersFlashcards';
 
 type Props = {};
 
@@ -19,7 +18,7 @@ const NewDeck = (props: Props) => {
   let navigate = useNavigate();
 
   const { activeFolder, foldersOptions } = useAppSelector(
-    (state) => state.activeFolder
+    (state) => state.folders
   );
   const dispatch = useAppDispatch();
 
@@ -34,8 +33,6 @@ const NewDeck = (props: Props) => {
     setDeckName('');
     navigate('/create/flashcard');
   };
-
-  console.log(foldersOptions);
 
   return (
     <FlexContainer>

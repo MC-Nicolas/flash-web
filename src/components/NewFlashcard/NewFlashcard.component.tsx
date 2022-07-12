@@ -21,7 +21,6 @@ import {
 } from '../../redux/newFlashcard/newFlashcard';
 
 type Props = {};
-const typesOfFlashcards = ['classic', 'QCM', 'smartcard', 'timed'];
 
 const NewFlashcard = (props: Props) => {
   const { activeFolder, activeSubFolder } = useAppSelector(
