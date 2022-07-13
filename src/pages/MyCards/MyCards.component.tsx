@@ -11,8 +11,10 @@ import {
   extractFlashcards,
   extractFolders,
   extractSubFolders,
+  removeFlashcardFromDB,
 } from '../../database/foldersData';
 import {
+  removeFlashcard,
   setActiveFolder,
   setActiveSubFolder,
   setSubFoldersOptions,
@@ -30,26 +32,22 @@ const MyCards = (props: Props) => {
     activeSubFolder,
     subFoldersOptions,
     foldersOptions,
+    flashcards,
   } = useAppSelector((state) => state.folders);
 
-  const [flashcards, setFlashcards] = useState<any>([]);
+  const { email } = useAppSelector((state) => state.user);
 
-  useEffect(() => {
-    if (folders && activeFolder && activeSubFolder) {
-      setFlashcards(extractFlashcards(folders, activeFolder, activeSubFolder));
-    }
-  }, [activeFolder, activeSubFolder]);
-
-  useEffect(() => {
-    if (!activeFolder) {
-      dispatch(setActiveFolder(extractFolders(folders)[0]));
-    }
-  }, [folders]);
-
-  useEffect(() => {
-    dispatch(setActiveSubFolder(extractSubFolders(folders, activeFolder)[0]));
-    dispatch(setSubFoldersOptions(extractSubFolders(folders, activeFolder)));
-  }, [activeFolder]);
+  const handleOnEditFlashcard = (index: number) => {};
+  const handleOnDeleteFlashcard = async (index: number) => {
+    const cardNumber = index + 1;
+    dispatch(removeFlashcard(cardNumber));
+    await removeFlashcardFromDB(
+      email,
+      activeFolder,
+      activeSubFolder,
+      cardNumber
+    );
+  };
 
   return (
     <FlexContainer>
@@ -98,17 +96,21 @@ const MyCards = (props: Props) => {
             height='80%'
             justifyContent='space-evenly'
           >
-            {flashcards.map((flashcard: { front: string; back: string }) => (
-              <ContextMenu
-                key={flashcard.front + flashcard.back}
-                clickableElement={
-                  <PreviewCard
-                    cardFrontText={flashcard.front}
-                    cardBackText={flashcard.back}
-                  />
-                }
-              />
-            ))}
+            {flashcards.map(
+              (flashcard: { front: string; back: string }, index: number) => (
+                <ContextMenu
+                  onEditFlashcard={() => handleOnEditFlashcard(index)}
+                  onDeleteFlashcard={() => handleOnDeleteFlashcard(index)}
+                  key={flashcard.front + flashcard.back}
+                  clickableElement={
+                    <PreviewCard
+                      cardFrontText={flashcard.front}
+                      cardBackText={flashcard.back}
+                    />
+                  }
+                />
+              )
+            )}
           </FlexContainer>
         </DarkContainer>
       </FlexContainer>

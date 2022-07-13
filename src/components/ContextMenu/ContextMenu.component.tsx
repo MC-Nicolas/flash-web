@@ -1,11 +1,18 @@
+import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 
 type ContextMenuProps = {
   clickableElement: JSX.Element;
+  onEditFlashcard: () => void;
+  onDeleteFlashcard: () => void;
 };
 
-const ContextMenu = ({ clickableElement }: ContextMenuProps) => {
+const ContextMenu = ({
+  clickableElement,
+  onEditFlashcard,
+  onDeleteFlashcard,
+}: ContextMenuProps) => {
   const [isVisible, setIsVisible] = useState(false);
   return (
     <FlexContainer
@@ -34,18 +41,31 @@ const ContextMenu = ({ clickableElement }: ContextMenuProps) => {
             textAlign: 'center',
             backgroundColor: 'rgba(255,255,255,0.5)',
             boxShadow:
-              'inset 5px 3px 10px 0px rgba(0, 0, 0, 0.5), -3px -3px 6px 0px rgba(255, 255, 255, 0.05)',
+              '5px 3px 10px 0px rgba(0, 0, 0, 0.5), -3px -3px 6px 0px rgba(255, 255, 255, 0.05)',
             borderRadius: '10px',
             position: 'absolute',
             top: '0',
             left: '90%',
           }}
         >
-          <FlexContainer style={{ backgroundColor: 'rgba(0,0,0,0)' }}>
-            <p>Edit</p>
+          <FlexContainer
+            style={{
+              backgroundColor: 'rgba(0,0,0,0)',
+              borderBottom: '1px solid black',
+            }}
+          >
+            <Button variant='contained' onClick={onEditFlashcard}>
+              Edit
+            </Button>
           </FlexContainer>
           <FlexContainer style={{ backgroundColor: 'rgba(0,0,0,0)' }}>
-            <p>Delete</p>
+            <Button
+              variant='contained'
+              color='error'
+              onClick={onDeleteFlashcard}
+            >
+              Delete
+            </Button>
           </FlexContainer>
         </FlexContainer>
       )}

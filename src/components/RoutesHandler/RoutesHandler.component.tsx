@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 
@@ -13,6 +13,7 @@ import Login from '../../pages/Login/Login.page';
 import Study from '../../pages/Study/Study.component';
 
 const RoutesHandler = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { email, isUserAuthenticated } = useAppSelector((state) => state.user);
 
@@ -26,6 +27,12 @@ const RoutesHandler = () => {
   useEffect(() => {
     getFolders();
   }, [email, isUserAuthenticated]);
+
+  useEffect(() => {
+    if (!isUserAuthenticated) {
+      navigate('/login');
+    }
+  }, []);
 
   return (
     <Routes>

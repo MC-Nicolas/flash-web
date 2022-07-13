@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  extractFlashcards,
   extractFolders,
   extractImportantFolders,
   extractSubFolders,
@@ -15,6 +16,7 @@ const initialState: {
   activeSubFolder: string;
   foldersOptions: any[];
   subFoldersOptions: any[];
+  flashcards: any[];
 } = {
   folders: {},
   importantFolders: {},
@@ -22,6 +24,7 @@ const initialState: {
   activeSubFolder: '',
   foldersOptions: [],
   subFoldersOptions: [],
+  flashcards: [],
 };
 export const foldersSlice = createSlice({
   name: 'folders',
@@ -41,6 +44,11 @@ export const foldersSlice = createSlice({
       state.importantFolders = importantFolders;
       state.subFoldersOptions = subFoldersOptions;
       state.activeSubFolder = subFoldersOptions[0];
+      state.flashcards = extractFlashcards(
+        action.payload,
+        foldersOptions[0],
+        subFoldersOptions[0]
+      );
     },
     setImportantFolders: (state, action) => {
       state.importantFolders = action.payload;
@@ -53,15 +61,36 @@ export const foldersSlice = createSlice({
       state.activeFolder = action.payload;
       state.subFoldersOptions = subFoldersOptions;
       state.activeSubFolder = subFoldersOptions[0];
+      state.flashcards = extractFlashcards(
+        state.folders,
+        action.payload,
+        subFoldersOptions[0]
+      );
     },
     setActiveSubFolder: (state, action) => {
       state.activeSubFolder = action.payload;
+      state.flashcards = extractFlashcards(
+        state.folders,
+        state.activeFolder,
+        action.payload
+      );
     },
     setFoldersOptions: (state, action) => {
       state.foldersOptions = action.payload;
     },
     setSubFoldersOptions: (state, action) => {
       state.subFoldersOptions = action.payload;
+    },
+    setFlashcards: (state, action) => {
+      state.flashcards = action.payload;
+    },
+    removeFlashcard: (state, action) => {
+      state.flashcards = state.flashcards.filter(
+        (flashcard) => flashcard.number !== action.payload
+      );
+    },
+    addFlashcard: (state, action) => {
+      state.flashcards = [...state.flashcards, action.payload];
     },
   },
 });
@@ -73,6 +102,8 @@ export const {
   setActiveSubFolder,
   setFoldersOptions,
   setSubFoldersOptions,
+  removeFlashcard,
+  addFlashcard,
 } = foldersSlice.actions;
 export const selectFolders = (state: RootState) => state.folders;
 export const selectImportantFolders = (state: RootState) =>

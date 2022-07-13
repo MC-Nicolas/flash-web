@@ -201,16 +201,19 @@ export const BorderBottomInput = ({
   text,
   onChange,
   placeholder = '',
+  type = 'text',
 }: {
   text: string;
   onChange: any;
   placeholder: string;
+  type?: string;
 }) => {
   return (
     <input
       value={text}
       onChange={onChange}
       placeholder={placeholder}
+      type={type}
       style={{
         backgroundColor: 'rgba(0,0,0,0)',
         border: 'none',

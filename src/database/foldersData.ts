@@ -161,6 +161,46 @@ export const createNewFlashcard = async (
   );
 };
 
+export const removeFlashcardFromDB = async (
+  email: string,
+  folderToRemoveFrom: string,
+  subFolderToRemoveFrom: string,
+  cardNumber: number
+) => {
+  const folders = await getFoldersFromDB(email);
+
+  const subFolder: any =
+    folders && folders[removeSpecialCharacters(folderToRemoveFrom)];
+
+  const flashcards: any =
+    subFolder &&
+    subFolder[removeSpecialCharacters(subFolderToRemoveFrom)].flashcards;
+
+  const newFlashcards = flashcards.filter(
+    (flashcard: any) => flashcard.number !== cardNumber
+  );
+
+  for (let i = 0; i < newFlashcards.length; i++) {
+    newFlashcards[i].number = i + 1;
+  }
+
+  await setDoc(
+    doc(database, 'users', email),
+    {
+      folders: {
+        ...folders,
+        [removeSpecialCharacters(folderToRemoveFrom)]: {
+          [removeSpecialCharacters(subFolderToRemoveFrom)]: {
+            ...subFolder,
+            flashcards: newFlashcards,
+          },
+        },
+      },
+    },
+    { merge: true }
+  );
+};
+
 export const updateSubFolderOnFlashcardResult = async (
   email: string,
   folder: string,

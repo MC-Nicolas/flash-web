@@ -60,6 +60,7 @@ const Login = () => {
         }
       />
       <BorderBottomInput
+        type='password'
         text={loginForm.password}
         placeholder='Password'
         onChange={(e: { target: { value: string } }) =>
