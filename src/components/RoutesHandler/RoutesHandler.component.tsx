@@ -11,6 +11,7 @@ import Create from '../../pages/Create/Create.page';
 import Dashboard from '../../pages/Dashboard/Dashboard.page';
 import Login from '../../pages/Login/Login.page';
 import Study from '../../pages/Study/Study.component';
+import Settings from '../../pages/Settings/Settings.page';
 
 const RoutesHandler = () => {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ const RoutesHandler = () => {
       <Route path='/my-cards' element={<MyCards />} />
       <Route path='/create/:type' element={<Create />} />
       <Route path='/study' element={<Study />} />
+      <Route path='/settings' element={<Settings />} />
     </Routes>
   );
 };

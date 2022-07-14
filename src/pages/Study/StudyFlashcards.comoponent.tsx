@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import DarkContainer from '../../components/DarkContainer/DarkContainer.component';
 import FlippableFlashcard from '../../components/Flashcard/FlippableFlashcard.component';
@@ -10,19 +10,38 @@ import { FlashcardType } from '../../Types/Flashcards';
 import { Button } from '@mui/material';
 import { updateSubFolderOnFlashcardResult } from '../../database/foldersData';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../redux/redux.hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
+import QCMFlashcard from '../../components/Flashcard/QCMFlashcard.component';
+import { setQCMAnswers } from '../../redux/study/study';
+import { checkIsSuccessOnQCMAnswers } from '../../utils/functions';
 
 const StudyFlashcards = () => {
+  let navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { QCMAnswers } = useAppSelector((state) => state.study);
+  const { email } = useAppSelector((state) => state.user);
   const { activeFolder, activeSubFolder } = useAppSelector(
     (state) => state.folders
   );
-  let navigate = useNavigate();
+  const { flashcards } = useFlashcards(activeFolder, activeSubFolder);
 
-  const { email } = useAppSelector((state) => state.user);
   const [isFlipped, setIsFlipped] = useState(false);
   const [areCardsDone, setAreCardsDone] = useState(false);
-  const { flashcards } = useFlashcards(activeFolder, activeSubFolder);
   const [activeCard, setActiveCard] = useState(1);
+  const [typeOfCard, setTypeOfCard] = useState('classic');
+  const [QCMIsRevealed, setQCMIsRevealed] = useState(false);
+  const [prevQCMAnswers, setPrevQCMAnswers] = useState<any>();
+
+  useEffect(() => {
+    const activeFlashcard = flashcards[activeCard - 1];
+    if (activeFlashcard) {
+      if (typeof activeFlashcard.back === 'object') {
+        setTypeOfCard('qcm');
+      } else if (typeof activeFlashcard.back === 'string') {
+        setTypeOfCard('classic');
+      }
+    }
+  }, [flashcards, activeCard]);
 
   const handleOnNextCard = async (isSuccess: boolean) => {
     if (activeCard < flashcards.length) {
@@ -39,20 +58,41 @@ const StudyFlashcards = () => {
     }
   };
 
+  const handleOnRevealCard = () => {
+    const activeFlashcard = flashcards[activeCard - 1];
+    if (typeOfCard === 'qcm') {
+      setPrevQCMAnswers(QCMAnswers);
+      dispatch(setQCMAnswers(activeFlashcard.back));
+      setQCMIsRevealed(true);
+    } else {
+      setIsFlipped(true);
+    }
+  };
+
   return (
     <DarkContainer height='80%'>
       {!areCardsDone
         ? flashcards.map((flashcard: FlashcardType) => {
             if (activeCard === flashcard.number) {
-              return (
-                <FlippableFlashcard
-                  key={flashcard.number}
-                  front={flashcard.front}
-                  back={flashcard.back}
-                  isFlipped={isFlipped}
-                  setIsFlipped={setIsFlipped}
-                />
-              );
+              if (typeof flashcard.back === 'string') {
+                return (
+                  <FlippableFlashcard
+                    key={flashcard.number}
+                    front={flashcard.front}
+                    back={flashcard.back}
+                    isFlipped={isFlipped}
+                    setIsFlipped={setIsFlipped}
+                  />
+                );
+              } else if (typeof flashcard.back === 'object') {
+                return (
+                  <QCMFlashcard
+                    key={flashcard.number}
+                    front={flashcard.front}
+                    back={flashcard.back}
+                  />
+                );
+              }
             } else return null;
           })
         : 'You are done!'}
@@ -62,31 +102,55 @@ const StudyFlashcards = () => {
         justifyContent='space-evenly'
         style={{ backgroundColor: 'rgba(0,0,0,0)' }}
       >
-        {isFlipped && !areCardsDone ? (
+        {isFlipped || (QCMIsRevealed && !areCardsDone) ? (
           <>
-            <Button
-              variant='contained'
-              onClick={() => handleOnNextCard(false)}
-              color='error'
-            >
-              Fail
-            </Button>
-            <Button
-              variant='contained'
-              onClick={() => handleOnNextCard(true)}
-              color='success'
-            >
-              Succes
-            </Button>
+            {!QCMIsRevealed ? (
+              <>
+                <Button
+                  variant='contained'
+                  onClick={() => handleOnNextCard(false)}
+                  color='error'
+                >
+                  Fail
+                </Button>
+                <Button
+                  variant='contained'
+                  onClick={() => handleOnNextCard(true)}
+                  color='success'
+                >
+                  Succes
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant='contained'
+                onClick={() =>
+                  handleOnNextCard(
+                    checkIsSuccessOnQCMAnswers(
+                      prevQCMAnswers,
+                      flashcards[activeCard - 1].back
+                    )
+                  )
+                }
+                color='primary'
+              >
+                Next
+              </Button>
+            )}
           </>
         ) : (
           <Button
             variant='contained'
             onClick={() => {
-              areCardsDone ? navigate('/') : setIsFlipped(true);
+              areCardsDone ? navigate('/') : handleOnRevealCard();
             }}
           >
-            {areCardsDone ? 'Back to folder' : 'Flip'}
+            {areCardsDone && 'Back to folder'}
+            {!areCardsDone && typeOfCard === 'classic' && 'Flip'}
+            {!areCardsDone &&
+              typeOfCard === 'qcm' &&
+              !QCMIsRevealed &&
+              'Reveal'}
           </Button>
         )}
       </FlexContainer>

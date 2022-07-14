@@ -15,6 +15,7 @@ import {
   selectTypeOfFlashcard,
   setTypeOfFlashcard,
 } from '../../redux/newFlashcard/newFlashcard';
+import toast from 'react-hot-toast';
 
 type Props = {};
 
@@ -24,6 +25,11 @@ const NewFlashcard = (props: Props) => {
   const { activeFolder, activeSubFolder } = useAppSelector(
     (state) => state.folders
   );
+
+  const {
+    flashcard: { front, back },
+  } = useAppSelector((state) => state.create);
+
   const typeOfFlashcard = useAppSelector(selectTypeOfFlashcard);
 
   const [activeSection, setActiveSection] = useState('where');
@@ -32,13 +38,8 @@ const NewFlashcard = (props: Props) => {
   const [backCardText, setBackCardText] = useState('');
 
   const handleOnCreateNewFlashcard = async () => {
-    await createNewFlashcard(
-      email,
-      activeFolder,
-      activeSubFolder,
-      frontCardText,
-      backCardText
-    );
+    await createNewFlashcard(email, activeFolder, activeSubFolder, front, back);
+    toast('Flashcard created !');
   };
 
   const handleActiveSection = (currentStep: string) => {

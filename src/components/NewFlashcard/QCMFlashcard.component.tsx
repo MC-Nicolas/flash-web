@@ -8,7 +8,7 @@ import TextOptionWithButton from '../TextOptionWithButton/TextOptionWithButton.c
 
 const QCMFlashcard = () => {
   const dispatch = useAppDispatch();
-  const { flashcard } = useAppSelector((state) => state.activeFolder);
+  const { flashcard } = useAppSelector((state) => state.create);
   const [frontSideIsActive, setFrontSideIsActive] = useState(true);
 
   return (

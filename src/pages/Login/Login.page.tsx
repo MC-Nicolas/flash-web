@@ -9,6 +9,7 @@ import { loginOrSignup } from '../../database/users';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import { setUserEmail } from '../../redux/user/UserSlice';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   let navigate = useNavigate();
@@ -20,21 +21,24 @@ const Login = () => {
     password: '',
   });
 
-  const handleLoginOrSignup = () => {
-    const isSuccess = loginOrSignup(
+  const handleLoginOrSignup = async () => {
+    const loginSuccess: any = await loginOrSignup(
       isLogin,
       loginForm.email,
       loginForm.password
     );
-    if (isSuccess) {
+    if (!loginSuccess.error) {
       dispatch(setUserEmail(loginForm.email));
       navigate('/');
+    } else {
+      toast.error('Login failed');
+      console.log(loginSuccess.error);
     }
   };
 
   useEffect(() => {
     if (isUserAuthenticated) {
-      navigate('/dashboard');
+      navigate('/');
     }
   }, [isUserAuthenticated]);
 

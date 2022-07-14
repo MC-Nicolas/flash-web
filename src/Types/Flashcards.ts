@@ -1,5 +1,5 @@
 export interface FlashcardType {
-  back: string;
+  back: string | any;
   front: string;
   number: number;
 }

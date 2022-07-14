@@ -4,21 +4,22 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
-const auth = getAuth();
+export const auth = getAuth();
 
-export const loginOrSignup = (
+export const loginOrSignup = async (
   isLogin: boolean,
   email: string,
   password: string
 ) => {
   try {
     if (isLogin) {
-      signInWithEmailAndPassword(auth, email, password);
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      return res;
     } else {
-      createUserWithEmailAndPassword(auth, email, password);
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      return res;
     }
-    return true;
   } catch (err: any) {
-    throw new Error(err);
+    return { error: err.message };
   }
 };

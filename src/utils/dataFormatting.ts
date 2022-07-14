@@ -34,8 +34,6 @@ export const formatPercentage = (percentageObj: {
 }) => {
   const { totalAnswers, date, success } = percentageObj;
 
-  // console.log(percentageObj);
-
   if (success && totalAnswers) {
     return Math.floor((success / totalAnswers) * 100);
   } else return 0;

@@ -15,15 +15,17 @@ import storage from 'redux-persist/lib/storage';
 import themeReducer from './theme/themeSlice';
 import userReducer from './user/UserSlice';
 import folderReducer from './foldersFlashcards/foldersFlashcards';
-import activeFolderReducer from './create/create';
+import createReducer from './create/create';
 import newFlashcardReducer from './newFlashcard/newFlashcard';
+import studyReducer from './study/study';
 
 const rootReducer = combineReducers({
   theme: themeReducer,
   user: userReducer,
   folders: folderReducer,
-  activeFolder: activeFolderReducer,
+  create: createReducer,
   newFlashcard: newFlashcardReducer,
+  study: studyReducer,
 });
 
 const persistConfig = {

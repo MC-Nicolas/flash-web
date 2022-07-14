@@ -17,10 +17,13 @@ export const userSlice = createSlice({
       state.email = action.payload;
       state.isUserAuthenticated = true;
     },
+    setIsUserAuthenticated: (state, action) => {
+      state.isUserAuthenticated = action.payload;
+    },
   },
 });
 
-export const { setUserEmail } = userSlice.actions;
+export const { setUserEmail, setIsUserAuthenticated } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
 

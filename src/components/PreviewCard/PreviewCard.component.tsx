@@ -6,7 +6,7 @@ import FlexContainer from '../FlexContainer/FlexContainer.component';
 
 type PreviewCardProps = {
   cardFrontText: string;
-  cardBackText: string;
+  cardBackText: string | any[];
 };
 
 const PreviewCard = ({ cardFrontText, cardBackText }: PreviewCardProps) => {
@@ -30,8 +30,22 @@ const PreviewCard = ({ cardFrontText, cardBackText }: PreviewCardProps) => {
           <StyledText>{cardFrontText}</StyledText>
         </FlexContainer>
         <StyledDivider />
-        <FlexContainer style={{ backgroundColor: 'rgba(0,0,0,0)' }}>
-          <StyledText>{cardBackText}</StyledText>
+
+        <FlexContainer style={{ backgroundColor: 'rgba(0,0,0,0)' }} flexWrap>
+           
+          {typeof cardBackText === 'string' && (
+            <StyledText>{cardBackText}</StyledText>
+          )}
+          {typeof cardBackText !== 'string' &&
+            cardBackText.length > 0 &&
+            cardBackText.map((item: any) => {
+              return (
+                <StyledText style={{ margin: '5px' }}>
+                  {item.text}
+                  {item.isCorrect ? ' ✅' : ' ❌'}
+                </StyledText>
+              );
+            })}
         </FlexContainer>
       </FlexContainer>
     </StyledFlexContainer>

@@ -6,7 +6,7 @@ import './FlippableFlashcard.component.styles.scss';
 
 type FlippableFlashcardProps = {
   front: string;
-  back: string;
+  back: any;
   isFlipped: boolean;
   setIsFlipped: React.Dispatch<React.SetStateAction<boolean>>;
 };

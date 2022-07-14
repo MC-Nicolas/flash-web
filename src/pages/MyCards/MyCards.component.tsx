@@ -101,7 +101,7 @@ const MyCards = (props: Props) => {
                 <ContextMenu
                   onEditFlashcard={() => handleOnEditFlashcard(index)}
                   onDeleteFlashcard={() => handleOnDeleteFlashcard(index)}
-                  key={flashcard.front + flashcard.back}
+                  key={index}
                   clickableElement={
                     <PreviewCard
                       cardFrontText={flashcard.front}
