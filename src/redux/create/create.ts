@@ -14,7 +14,15 @@ export const create = createSlice({
       state.flashcard.front = action.payload;
     },
     setFlashcardBack: (state, action) => {
-      state.flashcard.back[action.payload.index] = action.payload.value;
+      if (action.payload.typeOfFlashcard.toLowerCase() === 'qcm') {
+        if (action.payload.type === 'add') {
+          state.flashcard.back.push({ isCorrect: false, text: '' });
+        } else if (action.payload.type === 'update') {
+          state.flashcard.back[action.payload.index] = action.payload.value;
+        } else if (action.payload.type === 'reset') {
+          state.flashcard.back = [{ isCorrect: false, text: '' }];
+        }
+      } else state.flashcard.back = action.payload.value;
     },
   },
 });

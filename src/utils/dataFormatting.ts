@@ -61,3 +61,19 @@ export const formatVariables = (variables: VariableType[]): VariableType[] => {
   });
   return formattedVariables;
 };
+
+export const returnNumberFromInitialRangeToTargerRange = (
+  number: number,
+  initialRange: [number, number],
+  targetRange: [number, number]
+) => {
+  const [initialMin, initialMax] = initialRange;
+  const [targetMin, targetMax] = targetRange;
+
+  const initialRangeSize = initialMax - initialMin;
+  const targetRangeSize = targetMax - targetMin;
+
+  const percentage = (number - initialMin) / initialRangeSize;
+
+  return targetMin + targetRangeSize * percentage;
+};

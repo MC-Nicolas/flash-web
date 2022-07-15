@@ -40,7 +40,7 @@ const PreviewCard = ({ cardFrontText, cardBackText }: PreviewCardProps) => {
             cardBackText.length > 0 &&
             cardBackText.map((item: any) => {
               return (
-                <StyledText style={{ margin: '5px' }}>
+                <StyledText key={item.text} style={{ margin: '5px' }}>
                   {item.text}
                   {item.isCorrect ? ' ✅' : ' ❌'}
                 </StyledText>

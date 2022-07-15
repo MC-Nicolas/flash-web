@@ -15,6 +15,7 @@ import {
   setActiveFolder,
   setFoldersOptions,
 } from '../../redux/foldersFlashcards/foldersFlashcards';
+import toast from 'react-hot-toast';
 
 const NewFolder = () => {
   let navigate = useNavigate();
@@ -25,10 +26,11 @@ const NewFolder = () => {
 
   const handleCreateFolder = async () => {
     await createNewFolderToDatabase(email, folderName);
-    dispatch(setActiveFolder(folderName));
-    dispatch(setFoldersOptions(extractFolders(folders)));
+    toast.success('Folder created successfully');
     setFolderName('');
     navigate('/create/deck');
+    dispatch(setActiveFolder(folderName));
+    dispatch(setFoldersOptions(extractFolders(folders)));
   };
 
   return (

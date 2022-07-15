@@ -7,24 +7,20 @@ import FlexContainer from '../FlexContainer/FlexContainer.component';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import SmartCard from './SmartCard.component';
 import QCMFlashcard from './QCMFlashcard.component';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
+import { setFlashcardBack, setFlashcardFront } from '../../redux/create/create';
 
 type WhatNewCardProps = {
   typeOfCard: string;
   onClick: () => void;
-  frontCardText: string;
-  setFrontCardText: any;
-  backCardText: string;
-  setBackCardText: any;
 };
 
-const WhatNewCard = ({
-  typeOfCard,
-  onClick,
-  frontCardText,
-  setFrontCardText,
-  backCardText,
-  setBackCardText,
-}: WhatNewCardProps) => {
+const WhatNewCard = ({ typeOfCard, onClick }: WhatNewCardProps) => {
+  const dispatch = useAppDispatch();
+  const {
+    flashcard: { front, back },
+  } = useAppSelector((state) => state.create);
+
   return (
     <FlexContainer
       style={{ backgroundColor: 'rgba(0,0,0,0)' }}
@@ -38,15 +34,20 @@ const WhatNewCard = ({
         {typeOfCard === 'classic' && (
           <>
             <Flashcard
-              text={frontCardText}
+              text={front}
               onChange={(e: { target: { value: string } }) =>
-                setFrontCardText(e.target.value)
+                dispatch(setFlashcardFront(e.target.value))
               }
             />
             <Flashcard
-              text={backCardText}
+              text={back}
               onChange={(e: { target: { value: string } }) =>
-                setBackCardText(e.target.value)
+                dispatch(
+                  setFlashcardBack({
+                    typeOfFlashcard: 'classic',
+                    value: e.target.value,
+                  })
+                )
               }
             />
           </>

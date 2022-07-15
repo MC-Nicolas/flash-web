@@ -11,6 +11,7 @@ import { NeumorphicInput, NeumorphicSelect } from '../Inputs/Inputs.component';
 import { theme } from '../../theme/theme';
 import { createNewSubFolder } from '../../database/foldersData';
 import { setActiveFolder } from '../../redux/foldersFlashcards/foldersFlashcards';
+import toast from 'react-hot-toast';
 
 type Props = {};
 
@@ -30,6 +31,7 @@ const NewDeck = (props: Props) => {
 
   const handleOnNewSubFolder = async () => {
     await createNewSubFolder(email, activeFolder, isImportant, deckName);
+    toast.success('New deck created successfully');
     setDeckName('');
     navigate('/create/flashcard');
   };

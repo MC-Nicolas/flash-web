@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import QCMFlashcard from '../../components/Flashcard/QCMFlashcard.component';
 import { setQCMAnswers } from '../../redux/study/study';
 import { checkIsSuccessOnQCMAnswers } from '../../utils/functions';
+import DoneIcon from '../../components/DoneIcon/DoneIcon.component';
 
 const StudyFlashcards = () => {
   let navigate = useNavigate();
@@ -37,9 +38,15 @@ const StudyFlashcards = () => {
     if (activeFlashcard) {
       if (typeof activeFlashcard.back === 'object') {
         setTypeOfCard('qcm');
+        setIsFlipped(false);
+        setQCMIsRevealed(false);
       } else if (typeof activeFlashcard.back === 'string') {
         setTypeOfCard('classic');
+        setQCMIsRevealed(false);
+        setIsFlipped(false);
       }
+    } else {
+      setAreCardsDone(true);
     }
   }, [flashcards, activeCard]);
 
@@ -55,6 +62,8 @@ const StudyFlashcards = () => {
       );
     } else {
       setAreCardsDone(true);
+      setQCMIsRevealed(false);
+      setIsFlipped(false);
     }
   };
 
@@ -71,31 +80,40 @@ const StudyFlashcards = () => {
 
   return (
     <DarkContainer height='80%'>
-      {!areCardsDone
-        ? flashcards.map((flashcard: FlashcardType) => {
-            if (activeCard === flashcard.number) {
-              if (typeof flashcard.back === 'string') {
-                return (
-                  <FlippableFlashcard
-                    key={flashcard.number}
-                    front={flashcard.front}
-                    back={flashcard.back}
-                    isFlipped={isFlipped}
-                    setIsFlipped={setIsFlipped}
-                  />
-                );
-              } else if (typeof flashcard.back === 'object') {
-                return (
-                  <QCMFlashcard
-                    key={flashcard.number}
-                    front={flashcard.front}
-                    back={flashcard.back}
-                  />
-                );
-              }
-            } else return null;
-          })
-        : 'You are done!'}
+      {!areCardsDone ? (
+        flashcards.map((flashcard: FlashcardType) => {
+          if (activeCard === flashcard.number) {
+            if (typeof flashcard.back === 'string') {
+              return (
+                <FlippableFlashcard
+                  key={flashcard.number}
+                  front={flashcard.front}
+                  back={flashcard.back}
+                  isFlipped={isFlipped}
+                  setIsFlipped={setIsFlipped}
+                />
+              );
+            } else if (typeof flashcard.back === 'object') {
+              return (
+                <QCMFlashcard
+                  key={flashcard.number}
+                  front={flashcard.front}
+                  back={flashcard.back}
+                />
+              );
+            }
+          } else return null;
+        })
+      ) : (
+        <FlexContainer
+          style={{ background: 'transparent' }}
+          height='30%'
+          justifyContent='center'
+          alignItems='center'
+        >
+          <DoneIcon />
+        </FlexContainer>
+      )}
 
       <FlexContainer
         height='100px'

@@ -100,7 +100,6 @@ export const createNewSubFolder = async (
     doc(database, 'users', email),
     {
       folders: {
-        ...folders,
         [removeSpecialCharacters(folderToAddTo)]: {
           [removeSpecialCharacters(subFolderName)]: {
             timeSpent: 0,
@@ -141,10 +140,8 @@ export const createNewFlashcard = async (
     doc(database, 'users', email),
     {
       folders: {
-        ...folders,
         [removeSpecialCharacters(folderToAddTo)]: {
           [removeSpecialCharacters(subFolderName)]: {
-            ...[removeSpecialCharacters(subFolderName)],
             flashcards: [
               ...flashcards,
               {
@@ -188,10 +185,8 @@ export const removeFlashcardFromDB = async (
     doc(database, 'users', email),
     {
       folders: {
-        ...folders,
         [removeSpecialCharacters(folderToRemoveFrom)]: {
           [removeSpecialCharacters(subFolderToRemoveFrom)]: {
-            ...subFolder,
             flashcards: newFlashcards,
           },
         },

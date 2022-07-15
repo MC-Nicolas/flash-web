@@ -25,11 +25,10 @@ const QCMFlashcard = () => {
           variant='contained'
           color='success'
           onClick={() => {
-            const QCMAnswers = flashcard.back.length;
             dispatch(
               setFlashcardBack({
-                index: QCMAnswers,
-                value: { text: '', isCorrect: false },
+                typeOfFlashcard: 'qcm',
+                type: 'add',
               })
             );
             setFrontSideIsActive(false);
@@ -75,6 +74,8 @@ const QCMFlashcard = () => {
                   onCorrectChange={() => {
                     dispatch(
                       setFlashcardBack({
+                        typeOfFlashcard: 'qcm',
+                        type: 'update',
                         index,
                         value: {
                           text: answer.text,
@@ -86,6 +87,8 @@ const QCMFlashcard = () => {
                   setText={(e: any) => {
                     dispatch(
                       setFlashcardBack({
+                        typeOfFlashcard: 'qcm',
+                        type: 'update',
                         index,
                         value: {
                           text: e.target.value,

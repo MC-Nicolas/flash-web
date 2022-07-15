@@ -61,7 +61,7 @@ const SelectFolders = ({
             onClick={setIsSelectionSection}
           />
         ) : (
-          <h1>No flashcards</h1>
+          <h1 style={{ color: 'white' }}>No flashcards</h1>
         )}
       </FlexContainer>
     </DarkContainer>

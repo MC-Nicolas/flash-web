@@ -104,6 +104,7 @@ const MyCards = (props: Props) => {
                   key={index}
                   clickableElement={
                     <PreviewCard
+                      key={index}
                       cardFrontText={flashcard.front}
                       cardBackText={flashcard.back}
                     />

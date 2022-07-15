@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import DarkContainer from '../DarkContainer/DarkContainer.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
@@ -16,6 +16,7 @@ import {
   setTypeOfFlashcard,
 } from '../../redux/newFlashcard/newFlashcard';
 import toast from 'react-hot-toast';
+import { setFlashcardBack, setFlashcardFront } from '../../redux/create/create';
 
 type Props = {};
 
@@ -34,12 +35,34 @@ const NewFlashcard = (props: Props) => {
 
   const [activeSection, setActiveSection] = useState('where');
 
-  const [frontCardText, setFrontCardText] = useState('');
-  const [backCardText, setBackCardText] = useState('');
+  useEffect(() => {
+    dispatch(setFlashcardFront(''));
+    if (typeOfFlashcard === 'classic') {
+      dispatch(setFlashcardBack({ typeOfFlashcard: 'classic', value: '' }));
+    } else if (typeOfFlashcard.toLowerCase() === 'qcm') {
+      dispatch(
+        setFlashcardBack({
+          typeOfFlashcard: 'qcm',
+          type: 'reset',
+        })
+      );
+    }
+  }, [typeOfFlashcard]);
 
   const handleOnCreateNewFlashcard = async () => {
     await createNewFlashcard(email, activeFolder, activeSubFolder, front, back);
     toast('Flashcard created !');
+    dispatch(setFlashcardFront(''));
+    if (typeOfFlashcard === 'classic') {
+      dispatch(setFlashcardBack({ typeOfFlashcard: 'classic', value: '' }));
+    } else if (typeOfFlashcard.toLowerCase() === 'qcm') {
+      dispatch(
+        setFlashcardBack({
+          typeOfFlashcard: 'qcm',
+          type: 'reset',
+        })
+      );
+    }
   };
 
   const handleActiveSection = (currentStep: string) => {
@@ -84,10 +107,6 @@ const NewFlashcard = (props: Props) => {
           )}
           {activeSection === 'what' ? (
             <WhatNewCard
-              frontCardText={frontCardText}
-              setFrontCardText={setFrontCardText}
-              backCardText={backCardText}
-              setBackCardText={setBackCardText}
               typeOfCard={typeOfFlashcard}
               onClick={handleOnCreateNewFlashcard}
             />

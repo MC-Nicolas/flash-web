@@ -17,7 +17,6 @@ const Dashboard = () => {
   const { importantFolders } = useAppSelector(
     (state: RootState) => state.folders
   );
-
   useEffect(() => {
     const percentages = [];
     let sum = 0;
