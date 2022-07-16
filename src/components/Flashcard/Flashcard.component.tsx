@@ -18,11 +18,14 @@ const Flashcard = ({
       <textarea
         style={{
           textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'center',
           backgroundColor: 'transparent',
           border: 'none',
           color: 'white',
           fontSize: '18px',
           width: '90%',
+          padding: ' 15px 10px',
           height: '90%',
         }}
         onChange={onChange}

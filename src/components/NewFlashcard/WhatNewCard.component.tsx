@@ -40,6 +40,10 @@ const WhatNewCard = ({ typeOfCard, onClick }: WhatNewCardProps) => {
               }
             />
             <Flashcard
+              style={{
+                background:
+                  'radial-gradient(rgba(255, 255, 255, 0.546) 0%, rgba(35, 38, 41, 0.5) 100%)',
+              }}
               text={back}
               onChange={(e: { target: { value: string } }) =>
                 dispatch(

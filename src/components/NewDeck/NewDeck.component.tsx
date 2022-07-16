@@ -60,8 +60,10 @@ const NewDeck = (props: Props) => {
           }
         />
         <FormControlLabel
+          sx={{ color: 'white' }}
           control={
             <Checkbox
+              sx={{ color: 'white' }}
               color='success'
               value={isImportant}
               onChange={(e: { target: { checked: boolean } }) =>

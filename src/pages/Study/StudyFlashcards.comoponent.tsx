@@ -19,6 +19,7 @@ import { setQCMAnswers } from '../../redux/study/study';
 import { checkIsSuccessOnQCMAnswers } from '../../utils/functions';
 import DoneIcon from '../../components/DoneIcon/DoneIcon.component';
 import { setFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
+import { setIsLoading } from '../../redux/loader/loader';
 
 const StudyFlashcards = () => {
   let navigate = useNavigate();
@@ -84,8 +85,10 @@ const StudyFlashcards = () => {
 
   const getFolders = async () => {
     if (email && isUserAuthenticated) {
+      dispatch(setIsLoading(true));
       const folders = await getFoldersFromDB(email);
       dispatch(setFolders(folders));
+      dispatch(setIsLoading(false));
     }
   };
 

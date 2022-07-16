@@ -7,6 +7,7 @@ import NewFolder from '../../components/NewFolder/NewFolder.component';
 import Sidebar from '../../components/Sidebar/Sidebar.component';
 import { getFoldersFromDB } from '../../database/foldersData';
 import { setFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
+import { setIsLoading } from '../../redux/loader/loader';
 
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import { capitalizeFirstLetter } from '../../utils/functions';
@@ -21,8 +22,10 @@ const Create = () => {
 
   const getFolders = async () => {
     if (email && isUserAuthenticated) {
+      dispatch(setIsLoading(true));
       const folders = await getFoldersFromDB(email);
       dispatch(setFolders(folders));
+      dispatch(setIsLoading(false));
     }
   };
 

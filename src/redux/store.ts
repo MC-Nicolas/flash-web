@@ -18,6 +18,7 @@ import folderReducer from './foldersFlashcards/foldersFlashcards';
 import createReducer from './create/create';
 import newFlashcardReducer from './newFlashcard/newFlashcard';
 import studyReducer from './study/study';
+import loaderReducer from './loader/loader';
 
 const rootReducer = combineReducers({
   theme: themeReducer,
@@ -26,13 +27,14 @@ const rootReducer = combineReducers({
   create: createReducer,
   newFlashcard: newFlashcardReducer,
   study: studyReducer,
+  loader: loaderReducer,
 });
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  blacklist: ['create', 'folders'],
+  blacklist: ['create', 'folders', 'loader'],
 };
 
 const persitedReducer = persistReducer(persistConfig, rootReducer);

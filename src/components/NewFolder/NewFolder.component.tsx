@@ -18,6 +18,7 @@ import {
   setFoldersOptions,
 } from '../../redux/foldersFlashcards/foldersFlashcards';
 import toast from 'react-hot-toast';
+import { setIsLoading } from '../../redux/loader/loader';
 
 const NewFolder = () => {
   let navigate = useNavigate();
@@ -37,8 +38,10 @@ const NewFolder = () => {
 
   const getFolders = async () => {
     if (email && isUserAuthenticated) {
+      dispatch(setIsLoading(true));
       const folders = await getFoldersFromDB(email);
       dispatch(setFolders(folders));
+      dispatch(setIsLoading(false));
     }
   };
 

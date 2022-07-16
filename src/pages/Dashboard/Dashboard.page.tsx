@@ -7,6 +7,7 @@ import ProgressBar from '../../components/ProgressBar/ProgressBar.component';
 import Sidebar from '../../components/Sidebar/Sidebar.component';
 import { getFoldersFromDB } from '../../database/foldersData';
 import { setFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
+import { setIsLoading } from '../../redux/loader/loader';
 
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import { RootState } from '../../redux/store';
@@ -45,13 +46,20 @@ const Dashboard = () => {
     const todaysTotalAnswers =
       extractTodayFromImportantFolderSuccessPercentages(folder);
     const numberOfFlashcards = folder.flashcards.length;
-    return calculatePercentage(todaysTotalAnswers, numberOfFlashcards);
+
+    const percentage = calculatePercentage(
+      todaysTotalAnswers,
+      numberOfFlashcards
+    );
+    return percentage || 0;
   };
 
   const getFolders = async () => {
     if (email && isUserAuthenticated) {
+      dispatch(setIsLoading(true));
       const folders = await getFoldersFromDB(email);
       dispatch(setFolders(folders));
+      dispatch(setIsLoading(false));
     }
   };
 

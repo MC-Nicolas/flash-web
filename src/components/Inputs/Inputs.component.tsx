@@ -79,6 +79,7 @@ export const NeumorphicSelect = ({
         onChange={onChange}
         placeholder={placeholder}
         value={value}
+        style={{ cursor: 'pointer' }}
       >
         {options?.map((option: string) => (
           <option key={option} value={option}>

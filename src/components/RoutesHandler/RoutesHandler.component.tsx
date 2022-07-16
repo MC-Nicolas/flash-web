@@ -12,6 +12,7 @@ import Dashboard from '../../pages/Dashboard/Dashboard.page';
 import Login from '../../pages/Login/Login.page';
 import Study from '../../pages/Study/Study.component';
 import Settings from '../../pages/Settings/Settings.page';
+import { setIsLoading } from '../../redux/loader/loader';
 
 const RoutesHandler = () => {
   const navigate = useNavigate();
@@ -20,8 +21,10 @@ const RoutesHandler = () => {
 
   const getFolders = async () => {
     if (email && isUserAuthenticated) {
+      dispatch(setIsLoading(true));
       const folders = await getFoldersFromDB(email);
       dispatch(setFolders(folders));
+      dispatch(setIsLoading(false));
     }
   };
 

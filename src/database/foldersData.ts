@@ -81,11 +81,13 @@ export const createNewFolderToDatabase = async (
   email: string,
   folderName: string
 ) => {
-  const folders = await getFoldersFromDB(email);
-
-  await setDoc(doc(database, 'users', email), {
-    folders: { ...folders, [removeSpecialCharacters(folderName)]: {} },
-  });
+  await setDoc(
+    doc(database, 'users', email),
+    {
+      folders: { [removeSpecialCharacters(folderName)]: {} },
+    },
+    { merge: true }
+  );
 };
 
 export const createNewSubFolder = async (

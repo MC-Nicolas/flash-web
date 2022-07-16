@@ -9,12 +9,14 @@ import DevSuggestions from './components/DevSuggestions/DevSuggestions.component
 import DevModal from './components/DevSuggestions/DevModal.component';
 
 import { Toaster } from 'react-hot-toast';
+import Loader from './components/Loader/Loader.component';
 
 const App = () => {
   const [devModalIsActive, setDevModalIsActive] = useState(false);
   return (
     <ReduxProvider store={store}>
       <Toaster />
+      <Loader />
       <DevSuggestions
         setDevModalIsActive={() => setDevModalIsActive(!devModalIsActive)}
       />
