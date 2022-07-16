@@ -57,8 +57,12 @@ const Dashboard = () => {
   const getFolders = async () => {
     if (email && isUserAuthenticated) {
       dispatch(setIsLoading(true));
-      const folders = await getFoldersFromDB(email);
-      dispatch(setFolders(folders));
+      try {
+        const folders = await getFoldersFromDB(email);
+        dispatch(setFolders(folders));
+      } catch (err) {
+        console.log(err);
+      }
       dispatch(setIsLoading(false));
     }
   };

@@ -46,6 +46,7 @@ export const extractFlashcards = (
   const flashcards: any[] = [];
 
   const folderData = folders[folder];
+
   if (folderData[subFolder]) {
     subFolder && flashcards.push(...folderData[subFolder].flashcards);
   }
@@ -84,7 +85,11 @@ export const createNewFolderToDatabase = async (
   await setDoc(
     doc(database, 'users', email),
     {
-      folders: { [removeSpecialCharacters(folderName)]: {} },
+      folders: {
+        [removeSpecialCharacters(folderName)]: {
+          title: folderName,
+        },
+      },
     },
     { merge: true }
   );
