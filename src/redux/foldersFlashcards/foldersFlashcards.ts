@@ -59,13 +59,15 @@ export const foldersSlice = createSlice({
         action.payload
       );
       state.activeFolder = action.payload;
-      state.subFoldersOptions = subFoldersOptions;
-      state.activeSubFolder = subFoldersOptions[0];
-      state.flashcards = extractFlashcards(
-        state.folders,
-        action.payload,
-        subFoldersOptions[0]
-      );
+      if (subFoldersOptions.length > 0) {
+        state.subFoldersOptions = subFoldersOptions;
+        state.activeSubFolder = subFoldersOptions[0];
+        state.flashcards = extractFlashcards(
+          state.folders,
+          action.payload,
+          subFoldersOptions[0]
+        );
+      }
     },
     setActiveSubFolder: (state, action) => {
       state.activeSubFolder = action.payload;

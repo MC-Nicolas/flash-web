@@ -52,7 +52,7 @@ const StyledProgressCircle = styled.div`
     ),
     conic-gradient(
       rgba(255, 47, 47, 1) 0deg,
-      orange ${(props: { deg: number }) => props.deg}deg,
+      orange 180deg,
       rgba(7, 255, 32, 1)
     );
   border-radius: 50%;

@@ -24,13 +24,13 @@ const NewDeck = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const { email } = useAppSelector((state) => state.user);
-  const { folders } = useAppSelector((state) => state.folders);
 
   const [deckName, setDeckName] = useState('');
   const [isImportant, setIsImportant] = useState(false);
 
   const handleOnNewSubFolder = async () => {
     await createNewSubFolder(email, activeFolder, isImportant, deckName);
+    dispatch(setActiveFolder(activeFolder));
     toast.success('New deck created successfully');
     setDeckName('');
     navigate('/create/flashcard');

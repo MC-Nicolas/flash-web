@@ -32,7 +32,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  blacklist: ['create'],
+  blacklist: ['create', 'folders'],
 };
 
 const persitedReducer = persistReducer(persistConfig, rootReducer);

@@ -8,19 +8,23 @@ import useFlashcards from '../../hooks/useFlashcards.hooks';
 
 import { FlashcardType } from '../../Types/Flashcards';
 import { Button } from '@mui/material';
-import { updateSubFolderOnFlashcardResult } from '../../database/foldersData';
+import {
+  getFoldersFromDB,
+  updateSubFolderOnFlashcardResult,
+} from '../../database/foldersData';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import QCMFlashcard from '../../components/Flashcard/QCMFlashcard.component';
 import { setQCMAnswers } from '../../redux/study/study';
 import { checkIsSuccessOnQCMAnswers } from '../../utils/functions';
 import DoneIcon from '../../components/DoneIcon/DoneIcon.component';
+import { setFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
 
 const StudyFlashcards = () => {
   let navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { QCMAnswers } = useAppSelector((state) => state.study);
-  const { email } = useAppSelector((state) => state.user);
+  const { email, isUserAuthenticated } = useAppSelector((state) => state.user);
   const { activeFolder, activeSubFolder } = useAppSelector(
     (state) => state.folders
   );
@@ -77,6 +81,17 @@ const StudyFlashcards = () => {
       setIsFlipped(true);
     }
   };
+
+  const getFolders = async () => {
+    if (email && isUserAuthenticated) {
+      const folders = await getFoldersFromDB(email);
+      dispatch(setFolders(folders));
+    }
+  };
+
+  useEffect(() => {
+    getFolders();
+  }, [email, isUserAuthenticated]);
 
   return (
     <DarkContainer height='80%'>

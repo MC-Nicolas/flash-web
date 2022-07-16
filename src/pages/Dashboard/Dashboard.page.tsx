@@ -5,14 +5,20 @@ import DarkContainer from '../../components/DarkContainer/DarkContainer.componen
 import FlexContainer from '../../components/FlexContainer/FlexContainer.component';
 import ProgressBar from '../../components/ProgressBar/ProgressBar.component';
 import Sidebar from '../../components/Sidebar/Sidebar.component';
+import { getFoldersFromDB } from '../../database/foldersData';
+import { setFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
 
-import { useAppSelector } from '../../redux/redux.hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import { RootState } from '../../redux/store';
 import { SubFolderType } from '../../Types/Flashcards';
 import { extractTodayFromImportantFolderSuccessPercentages } from '../../utils/dataFormatting';
 import { calculatePercentage } from '../../utils/functions';
 
 const Dashboard = () => {
+  const dispatch = useAppDispatch();
+  const { email, isUserAuthenticated } = useAppSelector(
+    (state: RootState) => state.user
+  );
   const [totalPercentage, setTotalPercentage] = useState(0);
   const { importantFolders } = useAppSelector(
     (state: RootState) => state.folders
@@ -41,6 +47,17 @@ const Dashboard = () => {
     const numberOfFlashcards = folder.flashcards.length;
     return calculatePercentage(todaysTotalAnswers, numberOfFlashcards);
   };
+
+  const getFolders = async () => {
+    if (email && isUserAuthenticated) {
+      const folders = await getFoldersFromDB(email);
+      dispatch(setFolders(folders));
+    }
+  };
+
+  useEffect(() => {
+    getFolders();
+  }, [email, isUserAuthenticated]);
 
   return (
     <FlexContainer justifyContent='space-between'>
