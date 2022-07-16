@@ -86,9 +86,7 @@ export const createNewFolderToDatabase = async (
     doc(database, 'users', email),
     {
       folders: {
-        [removeSpecialCharacters(folderName)]: {
-          title: folderName,
-        },
+        [removeSpecialCharacters(folderName)]: {},
       },
     },
     { merge: true }
