@@ -28,6 +28,7 @@
   border-radius: 10px;
 }
 .flippable-front {
+  padding: 20px;
   z-index: 2;
   display: flex;
   justify-content: center;
@@ -38,8 +39,10 @@
   );
 }
 .flippable-back {
+  padding: 20px;
   z-index: 2;
   display: flex;
+
   justify-content: center;
   align-items: center;
   transform: rotateY(180deg);

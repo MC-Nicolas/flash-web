@@ -67,16 +67,6 @@ export const extractImportantFolders = (folders: any) => {
 
   return importantFolders;
 };
-export const extractPercentageFromImportantFoldersSuccess = (folders: any) => {
-  if (folders.length > 0) {
-    // const total = folders.reduce(
-    //   (acc: number, curr: SubFolderType) => acc + curr.successPercentage,
-    //   0
-    // );
-    // return total / folders.length;
-    return 65;
-  } else return 0;
-};
 
 export const createNewFolderToDatabase = async (
   email: string,
