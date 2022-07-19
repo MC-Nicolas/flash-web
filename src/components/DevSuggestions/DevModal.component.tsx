@@ -32,7 +32,7 @@ const DevModal = (props: Props) => {
   return (
     <FlexContainer
       style={{
-        zIndex: 100,
+        zIndex: 800,
         position: 'absolute',
         top: '25%',
         right: '15%',
@@ -54,13 +54,19 @@ const DevModal = (props: Props) => {
           Dev Suggestions
         </h1>
         <FlexContainer
-          style={{ backgroundColor: '#222' }}
+          height='200px'
+          style={{
+            backgroundColor: '#222',
+            overflowY: 'scroll',
+            padding: '50px 0',
+          }}
+          justifyContent='space-evenly'
           flexDirection='column'
         >
           {suggestions.map((suggestion, index) => {
             return (
               <FlexContainer key={index} style={{ backgroundColor: '#222' }}>
-                <BasicText text={suggestion} />
+                <BasicText text={suggestion} fontSize='16px' />
                 <Button
                   color='error'
                   onClick={() => {

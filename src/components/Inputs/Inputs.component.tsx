@@ -186,6 +186,7 @@ export const BasicInput = ({
       onChange={onChange}
       placeholder={placeholder}
       style={{
+        width: '90%',
         backgroundColor: 'rgba(0,0,0,0)',
         marginLeft: '10px',
         border: 'none',

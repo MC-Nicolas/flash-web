@@ -72,6 +72,7 @@ const StyledDivider = styled.div`
 `;
 
 const StyledText = styled.p`
+  width: 85%;
   color: white;
   font-size: 18px;
   letter-spacing: 1px;
