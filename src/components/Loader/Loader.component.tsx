@@ -15,7 +15,7 @@ const Loader = () => {
         transition: 'all .3s ease-in-out',
       }}
       height='100vh'
-      width='100vw'
+      width='97vw'
     >
       <span className='loader' />
     </FlexContainer>
