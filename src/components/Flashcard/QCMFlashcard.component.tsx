@@ -33,7 +33,7 @@ const QCMFlashcard = ({ front, back }: QCMFlashcardProps) => {
   return (
     <FlexContainer
       style={{ backgroundColor: 'rgba(0,0,0,0)' }}
-      height='800px'
+      height='100%'
       width='500px'
       flexDirection='column'
     >
