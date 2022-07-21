@@ -1,4 +1,6 @@
+import { Delete } from '@mui/icons-material';
 import React from 'react';
+import { useAppSelector } from '../../redux/redux.hooks';
 
 import { RadioButton } from '../Buttons/Buttons.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
@@ -9,6 +11,8 @@ type TextOptionWithButtonProps = {
   setText: any;
   isCorrect: boolean;
   onCorrectChange: any;
+  onDelete?: any;
+  isFirstInit?: boolean;
 };
 
 const TextOptionWithButton = ({
@@ -16,6 +20,8 @@ const TextOptionWithButton = ({
   setText,
   isCorrect,
   onCorrectChange,
+  onDelete,
+  isFirstInit = false,
 }: TextOptionWithButtonProps) => {
   return (
     <FlexContainer
@@ -27,18 +33,28 @@ const TextOptionWithButton = ({
         )`,
         boxShadow: '0px 0px 10px rgba(0,0,0,0.8)',
         border: '1px solid rgba(0,0,0,0.4)',
-        width: '500px',
+        width: '80%',
         height: '50px',
         borderRadius: '50px',
         paddingLeft: '10px',
       }}
       flexWrap
-      flexDirection='row'
+      flexDirection='column'
       alignItems='center'
-      justifyContent='flex-start'
+      justifyContent='space-evenly'
+      isTest
     >
-      <RadioButton isActive={isCorrect} onClick={onCorrectChange} />
-      <BasicInput text={text} onChange={setText} placeholder='Your answer' />
+      <RadioButton
+        isFirstInit={isFirstInit}
+        isActive={isCorrect}
+        onClick={onCorrectChange}
+      />
+      <FlexContainer width='90%' style={{ backgroundColor: 'transparent' }}>
+        <BasicInput text={text} onChange={setText} placeholder='Your answer' />
+        {onDelete && (
+          <Delete color='error' sx={{ cursor: 'pointer' }} onClick={onDelete} />
+        )}
+      </FlexContainer>
     </FlexContainer>
   );
 };

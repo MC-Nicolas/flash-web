@@ -1,6 +1,10 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
-import { setFlashcardBack, setFlashcardFront } from '../../redux/create/create';
+import React, { useEffect, useState } from 'react';
+import {
+  removeFlashcardBack,
+  setFlashcardBack,
+  setFlashcardFront,
+} from '../../redux/create/create';
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import Flashcard from '../Flashcard/Flashcard.component';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
@@ -97,6 +101,7 @@ const QCMFlashcard = () => {
                       })
                     );
                   }}
+                  onDelete={() => dispatch(removeFlashcardBack(answer.text))}
                 />
               )
             )}

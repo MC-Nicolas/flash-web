@@ -15,7 +15,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
 import QCMFlashcard from '../../components/Flashcard/QCMFlashcard.component';
-import { setQCMAnswers } from '../../redux/study/study';
+import { setFirstInitToAll, setQCMAnswers } from '../../redux/study/study';
 import { checkIsSuccessOnQCMAnswers } from '../../utils/functions';
 import DoneIcon from '../../components/DoneIcon/DoneIcon.component';
 import { setFolders } from '../../redux/foldersFlashcards/foldersFlashcards';
@@ -77,6 +77,7 @@ const StudyFlashcards = () => {
     if (typeOfCard === 'qcm') {
       setPrevQCMAnswers(QCMAnswers);
       dispatch(setQCMAnswers(activeFlashcard.back));
+      dispatch(setFirstInitToAll(false));
       setQCMIsRevealed(true);
     } else {
       setIsFlipped(true);

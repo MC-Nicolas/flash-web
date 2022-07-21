@@ -24,9 +24,16 @@ export const create = createSlice({
         }
       } else state.flashcard.back = action.payload.value;
     },
+    removeFlashcardBack: (state, action) => {
+      state.flashcard.back = state.flashcard.back.filter(
+        (back: { text: string; isCorrect: false }) =>
+          back.text !== action.payload
+      );
+    },
   },
 });
 
-export const { setFlashcardFront, setFlashcardBack } = create.actions;
+export const { setFlashcardFront, setFlashcardBack, removeFlashcardBack } =
+  create.actions;
 
 export default create.reducer;

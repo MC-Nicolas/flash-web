@@ -13,15 +13,37 @@ export const studySlice = createSlice({
   initialState,
   reducers: {
     setQCMAnswers: (state, action) => {
-      state.QCMAnswers = action.payload;
+      const answers: {
+        text: string;
+        isCorrect: boolean;
+        isFirstInit: boolean;
+      }[] = [];
+      action.payload.forEach((answer: { text: string; isCorrect: boolean }) => {
+        answers.push({ ...answer, isFirstInit: true });
+      });
+      state.QCMAnswers = answers;
     },
     changeQCMAnswer: (state, action) => {
       state.QCMAnswers[action.payload].isCorrect =
         !state.QCMAnswers[action.payload].isCorrect;
     },
+    setIsFirstInit: (state, action) => {
+      state.QCMAnswers[action.payload.index].isFirstInit =
+        action.payload.isFirstInit;
+    },
+    setFirstInitToAll: (state, action) => {
+      state.QCMAnswers.forEach((answer) => {
+        answer.isFirstInit = action.payload;
+      });
+    },
   },
 });
 
-export const { setQCMAnswers, changeQCMAnswer } = studySlice.actions;
+export const {
+  setQCMAnswers,
+  changeQCMAnswer,
+  setIsFirstInit,
+  setFirstInitToAll,
+} = studySlice.actions;
 
 export default studySlice.reducer;

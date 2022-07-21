@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/redux.hooks';
-import { changeQCMAnswer, setQCMAnswers } from '../../redux/study/study';
+import {
+  changeQCMAnswer,
+  setIsFirstInit,
+  setQCMAnswers,
+} from '../../redux/study/study';
 import FlexContainer from '../FlexContainer/FlexContainer.component';
 import TextOptionWithButton from '../TextOptionWithButton/TextOptionWithButton.component';
 import { BasicText } from '../Texts/Texts.component.stories';
@@ -47,14 +51,23 @@ const QCMFlashcard = ({ front, back }: QCMFlashcardProps) => {
       >
         {QCMAnswers &&
           QCMAnswers.map(
-            (answer: { text: string; isCorrect: boolean }, index: number) => (
+            (
+              answer: {
+                text: string;
+                isCorrect: boolean;
+                isFirstInit: boolean;
+              },
+              index: number
+            ) => (
               <TextOptionWithButton
                 key={index}
                 text={answer.text}
                 isCorrect={answer.isCorrect}
-                onCorrectChange={(e: { target: { value: string } }) =>
-                  dispatch(changeQCMAnswer(index))
-                }
+                isFirstInit={answer.isFirstInit}
+                onCorrectChange={() => {
+                  dispatch(changeQCMAnswer(index));
+                  dispatch(setIsFirstInit({ index, isFirstInit: false }));
+                }}
                 setText={(e: any) => ''}
               />
             )
