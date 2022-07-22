@@ -186,7 +186,7 @@ const StudyFlashcards = () => {
               areCardsDone ? navigate('/') : handleOnRevealCard();
             }}
           >
-            {areCardsDone && 'Back to folder'}
+            {areCardsDone && 'Home'}
             {!areCardsDone && typeOfCard === 'classic' && 'Flip'}
             {!areCardsDone &&
               typeOfCard === 'qcm' &&

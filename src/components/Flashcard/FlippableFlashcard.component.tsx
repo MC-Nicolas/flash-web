@@ -21,7 +21,7 @@ const FlippableFlashcard = ({
     <FlexContainer
       style={{ backgroundColor: 'rgba(0,0,0,0)', perspective: '1000px' }}
       height='400px'
-      width='500px'
+      width='80%'
     >
       <div className={`flippable-inner ${isFlipped ? 'flipped' : ''}`}>
         <div className='flippable-front'>{front}</div>

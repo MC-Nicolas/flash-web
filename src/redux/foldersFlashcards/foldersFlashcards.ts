@@ -17,6 +17,7 @@ const initialState: {
   foldersOptions: any[];
   subFoldersOptions: any[];
   flashcards: any[];
+  temporaryFolder: any[];
 } = {
   folders: {},
   importantFolders: {},
@@ -25,6 +26,7 @@ const initialState: {
   foldersOptions: [],
   subFoldersOptions: [],
   flashcards: [],
+  temporaryFolder: [],
 };
 export const foldersSlice = createSlice({
   name: 'folders',
@@ -94,6 +96,14 @@ export const foldersSlice = createSlice({
     addFlashcard: (state, action) => {
       state.flashcards = [...state.flashcards, action.payload];
     },
+    addElementTotemporaryFolder: (state, action) => {
+      state.temporaryFolder = [...state.temporaryFolder, action.payload];
+    },
+    removeElementFromTemporaryFolder: (state, action) => {
+      state.temporaryFolder = state.temporaryFolder.filter(
+        (element) => element.number !== action.payload
+      );
+    },
   },
 });
 
@@ -106,6 +116,8 @@ export const {
   setSubFoldersOptions,
   removeFlashcard,
   addFlashcard,
+  addElementTotemporaryFolder,
+  removeElementFromTemporaryFolder,
 } = foldersSlice.actions;
 export const selectFolders = (state: RootState) => state.folders;
 export const selectImportantFolders = (state: RootState) =>
