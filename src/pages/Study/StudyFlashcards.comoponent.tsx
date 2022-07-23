@@ -76,7 +76,9 @@ const StudyFlashcards = () => {
     const activeFlashcard = flashcards[activeCard - 1];
     if (typeOfCard === 'qcm') {
       setPrevQCMAnswers(QCMAnswers);
-      dispatch(setQCMAnswers(activeFlashcard.back));
+      dispatch(
+        setQCMAnswers({ answers: activeFlashcard.back, shuffle: false })
+      );
       dispatch(setFirstInitToAll(false));
       setQCMIsRevealed(true);
     } else {

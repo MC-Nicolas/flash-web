@@ -79,23 +79,27 @@ export const returnNumberFromInitialRangeToTargerRange = (
 };
 
 export const shuffleArray = (array: any[]) => {
-  let currentIndex = array.length,
+  var newArray: any[] = [];
+  var currentIndex = array.length,
+    temporaryValue,
     randomIndex;
-  let shuffledArray = [...array];
 
-  // While there remain elements to shuffle.
-  while (currentIndex != 0) {
-    // Pick a remaining element.
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
+    currentIndex -= 1;
 
     // And swap it with the current element.
-    [shuffledArray[currentIndex], shuffledArray[randomIndex]] = [
-      shuffledArray[randomIndex],
-      shuffledArray[currentIndex],
-    ];
+    if (newArray.hasOwnProperty(currentIndex)) {
+      temporaryValue = newArray[currentIndex];
+    } else {
+      temporaryValue = array[currentIndex];
+    }
+    newArray[currentIndex] = array[randomIndex];
+    newArray[randomIndex] = temporaryValue;
   }
-  return shuffledArray;
+  return newArray;
 };
 
 export const shuffleFlashcards = (flashcards: any[]) => {

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { shuffleArray } from '../../utils/dataFormatting';
 
 import type { RootState } from '../store';
 
@@ -17,19 +18,40 @@ export const studySlice = createSlice({
         text: string;
         isCorrect: boolean;
         isFirstInit: boolean;
+        id: number;
       }[] = [];
-      action.payload.forEach((answer: { text: string; isCorrect: boolean }) => {
-        answers.push({ ...answer, isFirstInit: true });
-      });
-      state.QCMAnswers = answers;
+      action.payload.answers.forEach(
+        (answer: { text: string; isCorrect: boolean }) => {
+          answers.push({
+            ...answer,
+            isFirstInit: true,
+            id: Math.floor(Math.random() * 10000),
+          });
+        }
+      );
+      state.QCMAnswers = action.payload.shuffle
+        ? shuffleArray(answers)
+        : answers;
     },
     changeQCMAnswer: (state, action) => {
-      state.QCMAnswers[action.payload].isCorrect =
-        !state.QCMAnswers[action.payload].isCorrect;
+      const newAnswers = [...state.QCMAnswers];
+      const foundAnswer = newAnswers.find(
+        (answer) => answer.id === action.payload
+      );
+      if (foundAnswer) {
+        foundAnswer.isCorrect = !foundAnswer.isCorrect;
+      }
+      state.QCMAnswers = newAnswers;
     },
     setIsFirstInit: (state, action) => {
-      state.QCMAnswers[action.payload.index].isFirstInit =
-        action.payload.isFirstInit;
+      const newAnswers = [...state.QCMAnswers];
+      const foundAnswer = newAnswers.find(
+        (answer) => answer.id === action.payload.id
+      );
+      if (foundAnswer) {
+        foundAnswer.isFirstInit = action.payload.isFirstInit;
+      }
+      state.QCMAnswers = newAnswers;
     },
     setFirstInitToAll: (state, action) => {
       state.QCMAnswers.forEach((answer) => {

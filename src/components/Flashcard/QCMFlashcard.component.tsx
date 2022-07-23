@@ -17,6 +17,7 @@ type QCMFlashcardProps = {
 const QCMFlashcard = ({ front, back }: QCMFlashcardProps) => {
   const { QCMAnswers } = useAppSelector((state) => state.study);
   const dispatch = useAppDispatch();
+  console.log(QCMAnswers);
 
   useEffect(() => {
     if (back.length > 0) {
@@ -26,7 +27,7 @@ const QCMFlashcard = ({ front, back }: QCMFlashcardProps) => {
           isCorrect: false,
         };
       });
-      dispatch(setQCMAnswers(newAnswers));
+      dispatch(setQCMAnswers({ answers: newAnswers, shuffle: true }));
     }
   }, [back]);
 
@@ -56,6 +57,7 @@ const QCMFlashcard = ({ front, back }: QCMFlashcardProps) => {
                 text: string;
                 isCorrect: boolean;
                 isFirstInit: boolean;
+                id: boolean;
               },
               index: number
             ) => (
@@ -65,8 +67,10 @@ const QCMFlashcard = ({ front, back }: QCMFlashcardProps) => {
                 isCorrect={answer.isCorrect}
                 isFirstInit={answer.isFirstInit}
                 onCorrectChange={() => {
-                  dispatch(changeQCMAnswer(index));
-                  dispatch(setIsFirstInit({ index, isFirstInit: false }));
+                  dispatch(changeQCMAnswer(answer.id));
+                  dispatch(
+                    setIsFirstInit({ id: answer.id, isFirstInit: false })
+                  );
                 }}
                 setText={(e: any) => ''}
               />
